@@ -231,7 +231,7 @@ body.cinema-mode .cinema-close{display:flex;}
     </div>
 
     <div class="np-mini" id="npMini">
-      <img class="np-logo-sm" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
+      <img id="npLogoSm" class="np-logo-sm" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
       <div class="np-info">
         <div class="np-name" id="npName">—</div>
         <div class="np-live"><span class="ldot"></span>بث مباشر · HD</div>
@@ -285,27 +285,28 @@ body.cinema-mode .cinema-close{display:flex;}
 
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
+const ALWAN_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg';
 const BEIN_CHS=[
-  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8',type:'bein'},
-  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein'},
-  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein'},
-  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein'},
-  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein'},
-  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein'},
-  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein'},
-  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein'},
-  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8',type:'bein'},
+  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8',type:'bein',logo:LOGO},
+  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein',logo:LOGO},
+  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein',logo:LOGO},
+  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein',logo:LOGO},
+  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein',logo:LOGO},
+  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein',logo:LOGO},
+  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein',logo:LOGO},
+  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein',logo:LOGO},
+  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8',type:'bein',logo:LOGO},
 ];
 const ALWAN_CHS=[
-  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan'},
-  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan'},
-  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan'},
-  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan'},
-  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan'},
-  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan'},
-  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
-  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
-  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan'},
+  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan',logo:ALWAN_LOGO},
+  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan',logo:ALWAN_LOGO},
+  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
 ];
 
 let cur=null,hls=null,retryUrl=null;
@@ -430,6 +431,8 @@ function play(ch){
   document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
+  // تغيير اللوغو حسب القناة
+  document.getElementById('npLogoSm').src=ch.logo||LOGO;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
   showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
