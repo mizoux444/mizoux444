@@ -16,6 +16,7 @@
   --white:#fff;--off:#f7f4ff;--text:#1a0a36;--muted:#7a6899;--border:#e2d6f7;--red:#c8102e;
   --r:14px;--rs:10px;
   --a1:#0a3d2e;--a2:#155f47;--a3:#1e8a64;--a4:#2dbf8b;--a5:#8eecd0;--a6:#e0faf3;
+  --k1:#7a1010;--k2:#b01c1c;--k3:#d63030;--k4:#f06060;--k5:#fbbdbd;--k6:#fff0f0;
 }
 html,body{min-height:100%;min-height:100dvh;background:var(--off);color:var(--text);font-family:'Cairo',sans-serif;overflow-x:hidden;}
 
@@ -162,6 +163,40 @@ body.cinema-mode .cinema-close{display:flex;}
 .card-badge span{font-size:10px;font-weight:700;color:var(--p2);}
 .ch-card.alwan .card-badge span{color:var(--a2);}
 .ch-card.alwan.active .card-badge span{color:var(--a1);}
+
+/* ══ ALKASS STYLES ══ */
+.ch-card.alkass::before{background:linear-gradient(90deg,var(--k2),var(--k4));}
+.ch-card.alkass .card-num{background:var(--k2);}
+.ch-card.alkass .card-logo{background:var(--k6);}
+.ch-card.alkass .card-badge{background:var(--k6);}
+.ch-card.alkass .card-badge span{color:var(--k2);}
+.ch-card.alkass:hover{border-color:var(--k4);box-shadow:0 4px 18px rgba(176,28,28,0.12);}
+.ch-card.alkass.active{background:linear-gradient(145deg,#fff0f0,#ffe0e0);border-color:var(--k3);box-shadow:0 6px 24px rgba(176,28,28,0.2);}
+.ch-card.alkass.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--k1),var(--k3));}
+.ch-card.alkass.active .card-num{background:var(--k3);}
+.ch-card.alkass.active .card-logo{border-color:var(--k3);background:#ffd0d0;}
+.ch-card.alkass.active .card-name{color:var(--k1);}
+.ch-card.alkass.active .card-badge{background:var(--k5);}
+.ch-card.alkass.active .card-badge span{color:var(--k1);}
+.alkass-title{color:var(--k1);}
+.alkass-line{background:linear-gradient(90deg,var(--k2),transparent)!important;}
+.alkass-count{color:var(--k3)!important;}
+
+/* ══ HORIZONTAL SCROLL GRID للكاس ══ */
+.ch-hscroll{
+  display:flex;gap:10px;
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:8px;margin-bottom:12px;
+  scrollbar-width:none;
+}
+.ch-hscroll::-webkit-scrollbar{display:none;}
+.ch-hscroll .ch-card{
+  flex:0 0 calc(33.33% - 7px);
+  min-width:calc(33.33% - 7px);
+  scroll-snap-align:start;
+}
 .empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px;color:var(--muted);font-size:13px;}
 .empty svg{width:36px;height:36px;stroke:var(--p5);fill:none;opacity:.7;}
 
@@ -231,7 +266,7 @@ body.cinema-mode .cinema-close{display:flex;}
     </div>
 
     <div class="np-mini" id="npMini">
-      <img id="npLogoSm" class="np-logo-sm" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
+      <img class="np-logo-sm" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
       <div class="np-info">
         <div class="np-name" id="npName">—</div>
         <div class="np-live"><span class="ldot"></span>بث مباشر · HD</div>
@@ -260,7 +295,7 @@ body.cinema-mode .cinema-close{display:flex;}
         <div class="section-line"></div>
         <div class="ch-count" id="beinCount">9 قنوات</div>
       </div>
-      <div class="ch-grid" id="beinGrid"></div>
+      <div class="ch-hscroll" id="beinGrid"></div>
     </div>
     <div id="alwanSection" style="margin-top:4px;">
       <div class="section-hdr">
@@ -268,7 +303,15 @@ body.cinema-mode .cinema-close{display:flex;}
         <div class="section-line alwan-line"></div>
         <div class="ch-count alwan-count" id="alwanCount">9 قنوات</div>
       </div>
-      <div class="ch-grid" id="alwanGrid"></div>
+      <div class="ch-hscroll" id="alwanGrid"></div>
+    </div>
+    <div id="alkassSection" style="margin-top:4px;">
+      <div class="section-hdr">
+        <div class="section-title alkass-title">ALKASS</div>
+        <div class="section-line alkass-line"></div>
+        <div class="ch-count alkass-count" id="alkassCount">6 قنوات</div>
+      </div>
+      <div class="ch-hscroll" id="alkassGrid"></div>
     </div>
     <div class="footer">
       <img class="footer-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
@@ -285,30 +328,37 @@ body.cinema-mode .cinema-close{display:flex;}
 
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
-const ALWAN_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg';
+const ALKASS_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(2).jpeg';
 const BEIN_CHS=[
-  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8',type:'bein',logo:LOGO},
-  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein',logo:LOGO},
-  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein',logo:LOGO},
-  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein',logo:LOGO},
-  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein',logo:LOGO},
-  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein',logo:LOGO},
-  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein',logo:LOGO},
-  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein',logo:LOGO},
-  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8',type:'bein',logo:LOGO},
+  {id:1,name:'beIN Sports 1',url:'https://agelis.voglempanis.online/premium91/index.m3u8',type:'bein'},
+  {id:2,name:'beIN Sports 2',url:'https://agelis.voglempanis.online/premium92/index.m3u8',type:'bein'},
+  {id:3,name:'beIN Sports 3',url:'https://agelis.voglempanis.online/premium93/index.m3u8',type:'bein'},
+  {id:4,name:'beIN Sports 4',url:'https://agelis.voglempanis.online/premium94/index.m3u8',type:'bein'},
+  {id:5,name:'beIN Sports 5',url:'https://agelis.voglempanis.online/premium95/index.m3u8',type:'bein'},
+  {id:6,name:'beIN Sports 6',url:'https://agelis.voglempanis.online/premium96/index.m3u8',type:'bein'},
+  {id:7,name:'beIN Sports 7',url:'https://agelis.voglempanis.online/premium97/index.m3u8',type:'bein'},
+  {id:8,name:'beIN Sports 8',url:'https://agelis.voglempanis.online/premium98/index.m3u8',type:'bein'},
+  {id:9,name:'beIN Sports 9',url:'https://agelis.voglempanis.online/premium99/index.m3u8',type:'bein'},
 ];
 const ALWAN_CHS=[
-  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan',logo:ALWAN_LOGO},
-  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan',logo:ALWAN_LOGO},
-  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
-  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan',logo:ALWAN_LOGO},
+  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan'},
+  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan'},
+  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan'},
+  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan'},
+  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan'},
+  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan'},
+  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
+  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
+  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan'},
 ];
-
+const ALKASS_CHS=[
+  {id:1,name:'ALKASS 1',url:'https://liveeu-gcp.alkassdigital.net/alkass1-p/main.m3u8',type:'alkass'},
+  {id:2,name:'ALKASS 2',url:'https://liveeu-gcp.alkassdigital.net/alkass2-p/main.m3u8',type:'alkass'},
+  {id:3,name:'ALKASS 3',url:'https://liveeu-gcp.alkassdigital.net/alkass3-p/main.m3u8',type:'alkass'},
+  {id:4,name:'ALKASS 4',url:'https://liveeu-gcp.alkassdigital.net/alkass4-p/main.m3u8',type:'alkass'},
+  {id:5,name:'ALKASS 5',url:'https://liveeu-gcp.alkassdigital.net/alkass5-p/main.m3u8',type:'alkass'},
+  {id:6,name:'ALKASS 6',url:'https://liveeu-gcp.alkassdigital.net/alkass6-p/main.m3u8',type:'alkass'},
+];
 let cur=null,hls=null,retryUrl=null;
 const vid=document.getElementById('vid');
 const cinemaOverlay=document.getElementById('cinemaOverlay');
@@ -399,18 +449,27 @@ function makeAlwanCard(ch){
   d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
   d.onclick=()=>play(ch);return d;
 }
+function makeAlkassCard(ch){
+  const d=document.createElement('div');
+  d.className='ch-card alkass'+(cur&&cur.type==='alkass'&&cur.id===ch.id?' active':'');
+  d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="${ALKASS_LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
+  d.onclick=()=>play(ch);return d;
+}
 
 function render(bl,al){
-  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid');
-  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection');
-  bg.innerHTML='';ag.innerHTML='';
+  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid'),kg=document.getElementById('alkassGrid');
+  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection'),ks=document.getElementById('alkassSection');
+  bg.innerHTML='';ag.innerHTML='';kg.innerHTML='';
   bl.length?bl.forEach(c=>bg.appendChild(makeBeinCard(c))):bg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
   al.length?al.forEach(c=>ag.appendChild(makeAlwanCard(c))):ag.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
+  ALKASS_CHS.forEach(c=>kg.appendChild(makeAlkassCard(c)));
   const q=document.getElementById('srchIn').value;
   bs.style.display=bl.length===0&&q?'none':'block';
   as.style.display=al.length===0&&q?'none':'block';
+  ks.style.display=q?'none':'block';
   document.getElementById('beinCount').textContent=bl.length+' قنوات';
   document.getElementById('alwanCount').textContent=al.length+' قنوات';
+  document.getElementById('alkassCount').textContent=ALKASS_CHS.length+' قنوات';
 }
 
 function doFilter(){
@@ -431,8 +490,6 @@ function play(ch){
   document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
-  // تغيير اللوغو حسب القناة
-  document.getElementById('npLogoSm').src=ch.logo||LOGO;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
   showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
@@ -441,8 +498,23 @@ function play(ch){
 
 function loadStream(url){
   if(hls){hls.destroy();hls=null;}
+
+  // headers مطلوبة لقنوات beIN VIP
+  const isBein = url.includes('voglempanis.online');
+  const hlsConfig = {
+    enableWorker:true,
+    lowLatencyMode:true,
+    backBufferLength:30,
+    ...(isBein && {
+      xhrSetup: function(xhr){
+        xhr.setRequestHeader('Origin','https://donis.jimpenopisonline.online');
+        xhr.setRequestHeader('Referer','https://donis.jimpenopisonline.online');
+      }
+    })
+  };
+
   if(Hls.isSupported()){
-    hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:30});
+    hls=new Hls(hlsConfig);
     hls.loadSource(url);hls.attachMedia(vid);
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();vid.play().catch(()=>{});});
     hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
