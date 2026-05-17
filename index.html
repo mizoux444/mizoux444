@@ -483,11 +483,7 @@ function playVLC(){
   if(!pendingCh) return;
   const url=pendingCh.url;
   closeModalDirect();
-  const storeUrl='https://play.google.com/store/apps/details?id=org.videolan.vlc';
-
-  // Android intent - يفتح VLC مباشرة، وإذا غير موجود يفتح Play Store تلقائياً
-  const intentUrl=`intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=vlc;package=org.videolan.vlc;S.browser_fallback_url=${encodeURIComponent(storeUrl)};end`;
-  window.location=intentUrl;
+  window.location='vlc://'+url;
 }
 
 function render(bl,al){
