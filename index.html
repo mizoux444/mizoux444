@@ -2,7 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Mizoux TV Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
@@ -48,6 +51,34 @@ body.cinema-mode .cinema-overlay{display:flex;}
   object-fit:contain !important;
   background:#000;
   display:block;
+}
+
+/* ══ وضع ملء الشاشة الحقيقي - يشمل كل المتصفحات ══ */
+:fullscreen,
+:-webkit-full-screen,
+:-moz-full-screen,
+:-ms-fullscreen {
+  background:#000 !important;
+  width:100vw !important;
+  height:100vh !important;
+}
+
+:fullscreen .cinema-overlay,
+:-webkit-full-screen .cinema-overlay,
+:-moz-full-screen .cinema-overlay {
+  display:flex !important;
+  width:100vw;
+  height:100vh;
+  background:#000;
+}
+
+:fullscreen video,
+:-webkit-full-screen video,
+:-moz-full-screen video {
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:contain !important;
+  background:#000 !important;
 }
 
 .cinema-close{
@@ -282,20 +313,64 @@ const vid=document.getElementById('vid');
 const cinemaOverlay=document.getElementById('cinemaOverlay');
 const playerWrap=document.getElementById('playerWrap');
 
-/* ══ CINEMA MODE - ملء الشاشة بدون Fullscreen API ══ */
+/* ══ FULLSCREEN - ملء الشاشة الحقيقي مع إخفاء شريط الإشعارات ══ */
 function goFS(){
   if(!cur) return;
-  // نقل الفيديو إلى cinema overlay
+
+  const el = document.documentElement; // ملء الشاشة الكاملة
+
+  if(el.requestFullscreen) el.requestFullscreen();
+  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen(); // iOS Safari
+  else if(el.mozRequestFullScreen) el.mozRequestFullScreen();
+  else if(el.msRequestFullscreen) el.msRequestFullscreen();
+
+  // نقل الفيديو إلى cinema overlay كـ fallback
   cinemaOverlay.appendChild(vid);
   document.body.classList.add('cinema-mode');
   window.scrollTo(0,0);
+
+  // تفعيل Screen Orientation landscape على الهاتف
+  if(screen.orientation && screen.orientation.lock){
+    screen.orientation.lock('landscape').catch(()=>{});
+  }
 }
 
 function exitCinema(){
+  if(document.fullscreenElement || document.webkitFullscreenElement){
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+    else if(document.msExitFullscreen) document.msExitFullscreen();
+  }
   // إعادة الفيديو لمكانه
   playerWrap.appendChild(vid);
   document.body.classList.remove('cinema-mode');
+
+  // إلغاء قفل الاتجاه
+  if(screen.orientation && screen.orientation.unlock){
+    screen.orientation.unlock();
+  }
 }
+
+// مزامنة مع زر الخروج من الـ Fullscreen في الجهاز
+document.addEventListener('fullscreenchange', ()=>{
+  if(!document.fullscreenElement && !document.webkitFullscreenElement){
+    if(document.body.classList.contains('cinema-mode')){
+      playerWrap.appendChild(vid);
+      document.body.classList.remove('cinema-mode');
+      if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+    }
+  }
+});
+document.addEventListener('webkitfullscreenchange', ()=>{
+  if(!document.webkitFullscreenElement){
+    if(document.body.classList.contains('cinema-mode')){
+      playerWrap.appendChild(vid);
+      document.body.classList.remove('cinema-mode');
+      if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+    }
+  }
+});
 
 // إغلاق بـ Escape
 document.addEventListener('keydown',e=>{
