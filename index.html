@@ -26,7 +26,6 @@
   --r:14px;
   --rs:10px;
 
-  /* ALWAN colors */
   --a1:#0a3d2e;
   --a2:#155f47;
   --a3:#1e8a64;
@@ -98,7 +97,62 @@ html,body{
   overflow:hidden;
 }
 
-video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
+/* VIDEO - contain by default, cover in fullscreen */
+video{
+  width:100%;height:100%;
+  object-fit:contain;
+  background:#000;
+  display:block;
+}
+
+/* ══ FULLSCREEN STYLES ══ */
+/* Standard fullscreen */
+video:fullscreen {
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:cover !important;
+  background:#000 !important;
+}
+/* WebKit (Safari/Chrome iOS) */
+video:-webkit-full-screen {
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:cover !important;
+  background:#000 !important;
+}
+/* Firefox */
+video:-moz-full-screen {
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:cover !important;
+  background:#000 !important;
+}
+/* MS */
+video:-ms-fullscreen {
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:cover !important;
+  background:#000 !important;
+}
+
+/* Fullscreen container */
+.player-wrap:fullscreen,
+.player-wrap:-webkit-full-screen,
+.player-wrap:-moz-full-screen,
+.player-wrap:-ms-fullscreen {
+  width:100vw !important;
+  height:100vh !important;
+  aspect-ratio:unset !important;
+}
+
+.player-wrap:fullscreen video,
+.player-wrap:-webkit-full-screen video,
+.player-wrap:-moz-full-screen video,
+.player-wrap:-ms-fullscreen video {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
 
 /* IDLE */
 .idle{
@@ -227,7 +281,6 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
   margin-bottom:20px;
 }
 
-/* ── beIN cards ── */
 .ch-card{
   background:var(--white);
   border:1.5px solid var(--border);
@@ -252,13 +305,8 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 }
 .ch-card.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--p1),var(--p3));}
 
-/* ── ALWAN cards ── */
-.ch-card.alwan{
-  border-color:var(--border);
-}
-.ch-card.alwan::before{
-  background:linear-gradient(90deg,var(--a2),var(--a4));
-}
+.ch-card.alwan{border-color:var(--border);}
+.ch-card.alwan::before{background:linear-gradient(90deg,var(--a2),var(--a4));}
 .ch-card.alwan:hover{border-color:var(--a4);box-shadow:0 4px 18px rgba(30,138,100,0.12);}
 .ch-card.alwan.active{
   background:linear-gradient(145deg,#e0faf3,#d0f5ea);
@@ -308,29 +356,6 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 .ch-card.alwan .card-badge span{color:var(--a2);}
 .ch-card.alwan.active .card-badge span{color:var(--a1);}
 
-/* ALWAN logo placeholder */
-.alwan-logo-ph{
-  width:54px;height:54px;border-radius:10px;
-  background:linear-gradient(135deg,var(--a2),var(--a4));
-  display:flex;align-items:center;justify-content:center;
-  border:1.5px solid var(--border);
-  flex-shrink:0;
-}
-.alwan-logo-ph span{
-  font-size:9px;font-weight:900;color:#fff;
-  text-align:center;line-height:1.2;
-  padding:2px;
-}
-
-/* SECTION DIVIDER */
-.section-divider{
-  margin:8px 0 18px;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--border),transparent);
-  border-radius:2px;
-}
-
-/* EMPTY STATE */
 .empty{
   grid-column:1/-1;
   display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -393,11 +418,10 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 <!-- DESKTOP WRAPPER -->
 <div class="app-desktop">
 
-  <!-- PLAYER COLUMN (desktop only wraps this) -->
   <div class="player-col">
 
     <!-- VIDEO -->
-    <div class="player-wrap">
+    <div class="player-wrap" id="playerWrap">
       <div class="idle" id="idle">
         <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-1px;animation:float 3s ease-in-out infinite;">Mizoux<span style="color:#a76ef0;">TV</span></div>
         <div class="idle-txt">
@@ -425,7 +449,7 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
         </button>
       </div>
 
-      <video id="vid" controls playsinline></video>
+      <video id="vid" controls playsinline webkit-playsinline></video>
     </div>
 
     <!-- NOW PLAYING MINI BAR -->
@@ -447,12 +471,11 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
       </div>
     </div>
 
-  </div><!-- /player-col -->
+  </div>
 
   <!-- CHANNELS LIST -->
   <section class="ch-section">
 
-    <!-- SEARCH -->
     <div style="padding-top:2px;margin-bottom:0;">
       <div class="srch-wrap" style="margin-bottom:14px;">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -496,7 +519,7 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
     </div>
   </section>
 
-</div><!-- /app-desktop -->
+</div>
 
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
@@ -506,150 +529,4 @@ const BEIN_CHS=[
   {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein'},
   {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein'},
   {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein'},
-  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein'},
-  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein'},
-  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein'},
-  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein'},
-  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8',type:'bein'},
-];
-
-const ALWAN_CHS=[
-  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan'},
-  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan'},
-  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan'},
-  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan'},
-  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan'},
-  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan'},
-  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
-  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
-  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan'},
-];
-
-let cur=null,hls=null,retryUrl=null;
-
-function makeBeinCard(ch){
-  const d=document.createElement('div');
-  d.className='ch-card'+(cur&&cur.type==='bein'&&cur.id===ch.id?' active':'');
-  d.innerHTML=`
-    <div class="card-num">${ch.id}</div>
-    <img class="card-logo" src="${LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/>
-    <div class="card-name">${ch.name}</div>
-    <div class="card-badge"><span class="bd"></span><span>مباشر</span></div>
-  `;
-  d.onclick=()=>play(ch);
-  return d;
-}
-
-function makeAlwanCard(ch){
-  const d=document.createElement('div');
-  d.className='ch-card alwan'+(cur&&cur.type==='alwan'&&cur.id===ch.id?' active':'');
-  d.innerHTML=`
-    <div class="card-num">${ch.id}</div>
-    <img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/>
-    <div class="card-name">${ch.name}</div>
-    <div class="card-badge"><span class="bd"></span><span>مباشر</span></div>
-  `;
-  d.onclick=()=>play(ch);
-  return d;
-}
-
-function render(beinList, alwanList){
-  const bg=document.getElementById('beinGrid');
-  const ag=document.getElementById('alwanGrid');
-  const bs=document.getElementById('beinSection');
-  const as=document.getElementById('alwanSection');
-
-  bg.innerHTML='';
-  ag.innerHTML='';
-
-  if(!beinList.length){
-    bg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
-  } else {
-    beinList.forEach(ch=>bg.appendChild(makeBeinCard(ch)));
-  }
-
-  if(!alwanList.length){
-    ag.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
-  } else {
-    alwanList.forEach(ch=>ag.appendChild(makeAlwanCard(ch)));
-  }
-
-  bs.style.display=beinList.length===0&&document.getElementById('srchIn').value?'none':'block';
-  as.style.display=alwanList.length===0&&document.getElementById('srchIn').value?'none':'block';
-
-  document.getElementById('beinCount').textContent=beinList.length+' قنوات';
-  document.getElementById('alwanCount').textContent=alwanList.length+' قنوات';
-}
-
-function doFilter(){
-  const q=document.getElementById('srchIn').value.trim().toLowerCase();
-  if(!q){render(BEIN_CHS,ALWAN_CHS);return;}
-  const b=BEIN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
-  const a=ALWAN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
-  render(b,a);
-  document.getElementById('beinSection').style.display=b.length?'block':'none';
-  document.getElementById('alwanSection').style.display=a.length?'block':'none';
-}
-
-function play(ch){
-  cur=ch;retryUrl=ch.url;
-  render(BEIN_CHS,ALWAN_CHS);
-  document.getElementById('idle').style.display='none';
-  document.getElementById('npMini').classList.add('show');
-  document.getElementById('npName').textContent=ch.name;
-  document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
-  showL();hideE();loadStream(ch.url);
-  document.querySelector('.player-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function loadStream(url){
-  const v=document.getElementById('vid');
-  if(hls){hls.destroy();hls=null;}
-  if(Hls.isSupported()){
-    hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:30});
-    hls.loadSource(url);hls.attachMedia(v);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();v.play().catch(()=>{});});
-    hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
-  } else if(v.canPlayType('application/vnd.apple.mpegurl')){
-    v.src=url;
-    v.addEventListener('loadedmetadata',()=>{hideL();v.play();},{once:true});
-    v.addEventListener('error',()=>{hideL();showE('تعذّر تشغيل القناة');},{once:true});
-  } else {hideL();showE('المتصفح لا يدعم HLS');}
-}
-
-function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl);}}
-function showL(){document.getElementById('loadOv').classList.add('show');}
-function hideL(){document.getElementById('loadOv').classList.remove('show');}
-function showE(m){document.getElementById('errTxt').textContent=m;document.getElementById('errOv').classList.add('show');}
-function hideE(){document.getElementById('errOv').classList.remove('show');}
-
-const VOL_ON=`<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>`;
-const VOL_OFF=`<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>`;
-
-function toggleMute(){
-  const v=document.getElementById('vid');
-  v.muted=!v.muted;
-  document.getElementById('volSvg').innerHTML=v.muted?VOL_OFF:VOL_ON;
-}
-
-function goFS(){
-  const v=document.getElementById('vid');
-  (v.requestFullscreen||v.webkitRequestFullscreen||v.mozRequestFullScreen).call(v);
-}
-
-const ALL_CHS=[...BEIN_CHS,...ALWAN_CHS];
-document.addEventListener('keydown',e=>{
-  if(document.activeElement.tagName==='INPUT')return;
-  if(!cur)return;
-  const list=cur.type==='bein'?BEIN_CHS:ALWAN_CHS;
-  const i=list.findIndex(c=>c.id===cur.id);
-  if(e.key==='ArrowUp'&&i>0){e.preventDefault();play(list[i-1]);}
-  if(e.key==='ArrowDown'&&i<list.length-1){e.preventDefault();play(list[i+1]);}
-  if(e.key==='m'||e.key==='م')toggleMute();
-  if(e.key==='f'||e.key==='ف')goFS();
-});
-
-render(BEIN_CHS,ALWAN_CHS);
-</script>
-</body>
-</html>
+  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1
