@@ -476,8 +476,9 @@ function closeModal(e){
   if(e.target===document.getElementById('playerModal')) closeModalDirect();
 }
 function playInternal(){
+  const ch=pendingCh;
   closeModalDirect();
-  play(pendingCh||null);
+  if(ch) play(ch);
 }
 function playVLC(){
   if(!pendingCh) return;
