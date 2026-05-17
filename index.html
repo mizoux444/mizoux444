@@ -25,6 +25,14 @@
   --gold:#c8941a;
   --r:14px;
   --rs:10px;
+
+  /* ALWAN colors */
+  --a1:#0a3d2e;
+  --a2:#155f47;
+  --a3:#1e8a64;
+  --a4:#2dbf8b;
+  --a5:#8eecd0;
+  --a6:#e0faf3;
 }
 
 html,body{
@@ -180,11 +188,18 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
   font-size:13px;font-weight:900;color:var(--p1);
   text-transform:uppercase;letter-spacing:1px;
 }
+.section-title.alwan-title{
+  color:var(--a2);
+}
 .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--p3),transparent);opacity:.25;}
+.section-line.alwan-line{background:linear-gradient(90deg,var(--a3),transparent);}
 .ch-count{
   background:var(--p6);color:var(--p2);
   font-size:11px;font-weight:700;
   padding:2px 9px;border-radius:20px;
+}
+.ch-count.alwan-count{
+  background:var(--a6);color:var(--a2);
 }
 
 /* SEARCH */
@@ -209,8 +224,10 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
+  margin-bottom:20px;
 }
 
+/* ── beIN cards ── */
 .ch-card{
   background:var(--white);
   border:1.5px solid var(--border);
@@ -235,13 +252,30 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 }
 .ch-card.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--p1),var(--p3));}
 
+/* ── ALWAN cards ── */
+.ch-card.alwan{
+  border-color:var(--border);
+}
+.ch-card.alwan::before{
+  background:linear-gradient(90deg,var(--a2),var(--a4));
+}
+.ch-card.alwan:hover{border-color:var(--a4);box-shadow:0 4px 18px rgba(30,138,100,0.12);}
+.ch-card.alwan.active{
+  background:linear-gradient(145deg,#e0faf3,#d0f5ea);
+  border-color:var(--a3);
+  box-shadow:0 6px 24px rgba(30,138,100,0.2);
+}
+.ch-card.alwan.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--a1),var(--a3));}
+
 .card-logo{
   width:54px;height:54px;border-radius:10px;
   object-fit:contain;background:#f0e8ff;padding:4px;
   border:1.5px solid var(--border);
   transition:border-color .2s;
 }
+.ch-card.alwan .card-logo{background:#e0faf3;}
 .ch-card.active .card-logo{border-color:var(--p3);background:#e4d0ff;}
+.ch-card.alwan.active .card-logo{border-color:var(--a3);background:#c0f0e0;}
 
 .card-num{
   position:absolute;top:8px;right:8px;
@@ -250,22 +284,51 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
   font-size:9px;font-weight:900;
   display:flex;align-items:center;justify-content:center;
 }
+.ch-card.alwan .card-num{background:var(--a2);}
 .ch-card.active .card-num{background:var(--p3);}
+.ch-card.alwan.active .card-num{background:var(--a3);}
 
 .card-name{
   font-size:12px;font-weight:700;color:var(--text);
   text-align:center;line-height:1.3;
 }
 .ch-card.active .card-name{color:var(--p1);}
+.ch-card.alwan.active .card-name{color:var(--a1);}
 
 .card-badge{
   display:flex;align-items:center;gap:4px;
   background:var(--p6);
   border-radius:20px;padding:2px 8px;
 }
+.ch-card.alwan .card-badge{background:var(--a6);}
 .ch-card.active .card-badge{background:var(--p5);}
+.ch-card.alwan.active .card-badge{background:var(--a5);}
 .card-badge .bd{width:5px;height:5px;border-radius:50%;background:var(--red);}
 .card-badge span{font-size:10px;font-weight:700;color:var(--p2);}
+.ch-card.alwan .card-badge span{color:var(--a2);}
+.ch-card.alwan.active .card-badge span{color:var(--a1);}
+
+/* ALWAN logo placeholder */
+.alwan-logo-ph{
+  width:54px;height:54px;border-radius:10px;
+  background:linear-gradient(135deg,var(--a2),var(--a4));
+  display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--border);
+  flex-shrink:0;
+}
+.alwan-logo-ph span{
+  font-size:9px;font-weight:900;color:#fff;
+  text-align:center;line-height:1.2;
+  padding:2px;
+}
+
+/* SECTION DIVIDER */
+.section-divider{
+  margin:8px 0 18px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  border-radius:2px;
+}
 
 /* EMPTY STATE */
 .empty{
@@ -317,7 +380,7 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
     <img class="brand-logo"
       src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
       alt="beIN" onerror="this.style.display='none'"/>
-    <div class="brand-name">be<em>IN</em> Sports</div>
+    <div class="brand-name">Mizoux <em>TV</em></div>
   </div>
   <div class="hdr-right">
     <div class="live-pill"><span class="ldot"></span>مباشر</div>
@@ -336,9 +399,7 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
     <!-- VIDEO -->
     <div class="player-wrap">
       <div class="idle" id="idle">
-        <img class="idle-logo"
-          src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
-          alt="beIN" onerror="this.outerHTML='<div style=\'font-size:52px;font-weight:900;color:#fff;\'>be<span style=\'color:#a76ef0\'>IN</span></div>'"/>
+        <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-1px;animation:float 3s ease-in-out infinite;">Mizoux<span style="color:#a76ef0;">TV</span></div>
         <div class="idle-txt">
           <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
           اختر قناة للمشاهدة
@@ -390,18 +451,34 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 
   <!-- CHANNELS LIST -->
   <section class="ch-section">
-    <div class="section-hdr">
-      <div class="section-title">القنوات</div>
-      <div class="section-line"></div>
-      <div class="ch-count">9 قنوات</div>
+
+    <!-- SEARCH -->
+    <div style="padding-top:2px;margin-bottom:0;">
+      <div class="srch-wrap" style="margin-bottom:14px;">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="srchIn" placeholder="ابحث عن قناة..." oninput="doFilter()"/>
+      </div>
     </div>
 
-    <div class="srch-wrap">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="srchIn" placeholder="ابحث عن قناة..." oninput="doFilter()"/>
+    <!-- beIN SECTION -->
+    <div id="beinSection">
+      <div class="section-hdr">
+        <div class="section-title">beIN Sports</div>
+        <div class="section-line"></div>
+        <div class="ch-count" id="beinCount">9 قنوات</div>
+      </div>
+      <div class="ch-grid" id="beinGrid"></div>
     </div>
 
-    <div class="ch-grid" id="chGrid"></div>
+    <!-- ALWAN SECTION -->
+    <div id="alwanSection" style="margin-top:4px;">
+      <div class="section-hdr">
+        <div class="section-title alwan-title">ALWAN</div>
+        <div class="section-line alwan-line"></div>
+        <div class="ch-count alwan-count" id="alwanCount">9 قنوات</div>
+      </div>
+      <div class="ch-grid" id="alwanGrid"></div>
+    </div>
 
     <div class="footer">
       <img class="footer-logo"
@@ -423,55 +500,105 @@ video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
 
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
-const CHS=[
-  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8'},
-  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8'},
-  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8'},
-  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8'},
-  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8'},
-  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8'},
-  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8'},
-  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8'},
-  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8'},
+
+const BEIN_CHS=[
+  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8',type:'bein'},
+  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein'},
+  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein'},
+  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein'},
+  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein'},
+  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein'},
+  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein'},
+  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein'},
+  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8',type:'bein'},
+];
+
+const ALWAN_CHS=[
+  {id:1,name:'ALWAN 1',url:'https://super-tv.vercel.app/api/play.m3u8?id=24',type:'alwan'},
+  {id:2,name:'ALWAN 2',url:'https://super-tv.vercel.app/api/play.m3u8?id=25',type:'alwan'},
+  {id:3,name:'ALWAN 3',url:'https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8',type:'alwan'},
+  {id:4,name:'ALWAN 4',url:'https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8',type:'alwan'},
+  {id:5,name:'ALWAN 5',url:'https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8',type:'alwan'},
+  {id:6,name:'ALWAN 6',url:'https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8',type:'alwan'},
+  {id:7,name:'ALWAN 7',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
+  {id:8,name:'ALWAN 8',url:'https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8',type:'alwan'},
+  {id:9,name:'ALWAN 9',url:'https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8',type:'alwan'},
 ];
 
 let cur=null,hls=null,retryUrl=null;
 
-function render(list){
-  const g=document.getElementById('chGrid');
-  g.innerHTML='';
-  if(!list.length){
-    g.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
-    return;
+function makeBeinCard(ch){
+  const d=document.createElement('div');
+  d.className='ch-card'+(cur&&cur.type==='bein'&&cur.id===ch.id?' active':'');
+  d.innerHTML=`
+    <div class="card-num">${ch.id}</div>
+    <img class="card-logo" src="${LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/>
+    <div class="card-name">${ch.name}</div>
+    <div class="card-badge"><span class="bd"></span><span>مباشر</span></div>
+  `;
+  d.onclick=()=>play(ch);
+  return d;
+}
+
+function makeAlwanCard(ch){
+  const d=document.createElement('div');
+  d.className='ch-card alwan'+(cur&&cur.type==='alwan'&&cur.id===ch.id?' active':'');
+  d.innerHTML=`
+    <div class="card-num">${ch.id}</div>
+    <img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/>
+    <div class="card-name">${ch.name}</div>
+    <div class="card-badge"><span class="bd"></span><span>مباشر</span></div>
+  `;
+  d.onclick=()=>play(ch);
+  return d;
+}
+
+function render(beinList, alwanList){
+  const bg=document.getElementById('beinGrid');
+  const ag=document.getElementById('alwanGrid');
+  const bs=document.getElementById('beinSection');
+  const as=document.getElementById('alwanSection');
+
+  bg.innerHTML='';
+  ag.innerHTML='';
+
+  if(!beinList.length){
+    bg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
+  } else {
+    beinList.forEach(ch=>bg.appendChild(makeBeinCard(ch)));
   }
-  list.forEach(ch=>{
-    const d=document.createElement('div');
-    d.className='ch-card'+(cur&&cur.id===ch.id?' active':'');
-    d.innerHTML=`
-      <div class="card-num">${ch.id}</div>
-      <img class="card-logo" src="${LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/>
-      <div class="card-name">${ch.name}</div>
-      <div class="card-badge"><span class="bd"></span><span>مباشر</span></div>
-    `;
-    d.onclick=()=>play(ch);
-    g.appendChild(d);
-  });
+
+  if(!alwanList.length){
+    ag.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
+  } else {
+    alwanList.forEach(ch=>ag.appendChild(makeAlwanCard(ch)));
+  }
+
+  bs.style.display=beinList.length===0&&document.getElementById('srchIn').value?'none':'block';
+  as.style.display=alwanList.length===0&&document.getElementById('srchIn').value?'none':'block';
+
+  document.getElementById('beinCount').textContent=beinList.length+' قنوات';
+  document.getElementById('alwanCount').textContent=alwanList.length+' قنوات';
 }
 
 function doFilter(){
-  const q=document.getElementById('srchIn').value.trim();
-  render(q?CHS.filter(c=>c.name.includes(q)||String(c.id).includes(q)):CHS);
+  const q=document.getElementById('srchIn').value.trim().toLowerCase();
+  if(!q){render(BEIN_CHS,ALWAN_CHS);return;}
+  const b=BEIN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
+  const a=ALWAN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
+  render(b,a);
+  document.getElementById('beinSection').style.display=b.length?'block':'none';
+  document.getElementById('alwanSection').style.display=a.length?'block':'none';
 }
 
 function play(ch){
   cur=ch;retryUrl=ch.url;
-  render(CHS);
+  render(BEIN_CHS,ALWAN_CHS);
   document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
   showL();hideE();loadStream(ch.url);
-  // scroll video into view on mobile
   document.querySelector('.player-wrap').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -510,17 +637,19 @@ function goFS(){
   (v.requestFullscreen||v.webkitRequestFullscreen||v.mozRequestFullScreen).call(v);
 }
 
+const ALL_CHS=[...BEIN_CHS,...ALWAN_CHS];
 document.addEventListener('keydown',e=>{
   if(document.activeElement.tagName==='INPUT')return;
   if(!cur)return;
-  const i=CHS.findIndex(c=>c.id===cur.id);
-  if(e.key==='ArrowUp'&&i>0){e.preventDefault();play(CHS[i-1]);}
-  if(e.key==='ArrowDown'&&i<CHS.length-1){e.preventDefault();play(CHS[i+1]);}
+  const list=cur.type==='bein'?BEIN_CHS:ALWAN_CHS;
+  const i=list.findIndex(c=>c.id===cur.id);
+  if(e.key==='ArrowUp'&&i>0){e.preventDefault();play(list[i-1]);}
+  if(e.key==='ArrowDown'&&i<list.length-1){e.preventDefault();play(list[i+1]);}
   if(e.key==='m'||e.key==='م')toggleMute();
   if(e.key==='f'||e.key==='ف')goFS();
 });
 
-render(CHS);
+render(BEIN_CHS,ALWAN_CHS);
 </script>
 </body>
 </html>
