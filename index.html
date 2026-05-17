@@ -266,7 +266,7 @@ body.cinema-mode .cinema-close{display:flex;}
     </div>
 
     <div class="np-mini" id="npMini">
-      <img class="np-logo-sm" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
+      <img class="np-logo-sm" id="npLogo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="logo" onerror="this.style.display='none'"/>
       <div class="np-info">
         <div class="np-name" id="npName">—</div>
         <div class="np-live"><span class="ldot"></span>بث مباشر · HD</div>
@@ -446,13 +446,20 @@ function doFilter(){
 
 function play(ch){
   cur=ch;retryUrl=ch.url;
-  // تأكد الفيديو في playerWrap لو مش في cinema
   if(!document.body.classList.contains('cinema-mode')) playerWrap.appendChild(vid);
   render(BEIN_CHS,ALWAN_CHS);
   document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
+  // تغيير اللوغو مع القناة
+  const logos={
+    bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
+    alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
+  };
+  const npLogo=document.getElementById('npLogo');
+  npLogo.src=logos[ch.type]||logos.bein;
+  npLogo.style.display='';
   showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
