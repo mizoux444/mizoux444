@@ -164,6 +164,39 @@ body.cinema-mode .cinema-close{display:flex;}
 .ch-card.alwan.active .card-badge span{color:var(--a1);}
 .empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px;color:var(--muted);font-size:13px;}
 .empty svg{width:36px;height:36px;stroke:var(--p5);fill:none;opacity:.7;}
+
+/* ══ PLAYER MODAL ══ */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(10,0,25,0.75);backdrop-filter:blur(6px);
+  align-items:flex-end;justify-content:center;
+}
+.modal-bg.open{display:flex;}
+.modal-box{
+  background:#fff;border-radius:22px 22px 0 0;
+  width:100%;max-width:480px;padding:20px 16px 32px;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 18px;}
+.modal-title{font-size:14px;font-weight:900;color:var(--p1);text-align:center;margin-bottom:6px;}
+.modal-ch{font-size:12px;color:var(--muted);text-align:center;margin-bottom:18px;font-weight:600;}
+.modal-btns{display:flex;flex-direction:column;gap:10px;}
+.modal-btn{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:14px;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;
+  transition:opacity .18s,transform .15s;text-align:right;
+}
+.modal-btn:hover{opacity:.88;transform:translateY(-1px);}
+.modal-btn-inner{background:linear-gradient(135deg,var(--p2),var(--p3));color:#fff;}
+.modal-btn-vlc{background:linear-gradient(135deg,#e65c00,#f9a825);color:#fff;}
+.modal-btn-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modal-btn-icon svg{width:20px;height:20px;fill:#fff;stroke:none;}
+.modal-btn-txt{display:flex;flex-direction:column;align-items:flex-start;}
+.modal-btn-lbl{font-size:14px;font-weight:900;}
+.modal-btn-sub{font-size:11px;opacity:.8;font-weight:600;}
+.modal-cancel{margin-top:4px;background:var(--off);border:1.5px solid var(--border);color:var(--muted);justify-content:center;font-size:13px;}
 .footer{padding:16px;margin-top:4px;display:flex;flex-direction:column;align-items:center;gap:8px;border-top:1px solid var(--border);}
 .footer-logo{height:28px;object-fit:contain;opacity:.5;}
 .footer-txt{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;}
@@ -187,6 +220,36 @@ body.cinema-mode .cinema-close{display:flex;}
 <div class="cinema-overlay" id="cinemaOverlay"></div>
 
 
+
+<!-- Player Selection Modal -->
+<div class="modal-bg" id="playerModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">اختر المشغل</div>
+    <div class="modal-ch" id="modalChName">—</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-inner" onclick="playInternal()">
+        <div class="modal-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/><path d="M10 8.5l5 3.5-5 3.5V8.5z"/></svg>
+        </div>
+        <div class="modal-btn-txt">
+          <span class="modal-btn-lbl">مشغل داخلي</span>
+          <span class="modal-btn-sub">تشغيل مباشر في التطبيق</span>
+        </div>
+      </button>
+      <button class="modal-btn modal-btn-vlc" onclick="playVLC()">
+        <div class="modal-btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/></svg>
+        </div>
+        <div class="modal-btn-txt">
+          <span class="modal-btn-lbl">مشغل VLC</span>
+          <span class="modal-btn-sub">فتح في تطبيق VLC الخارجي</span>
+        </div>
+      </button>
+      <button class="modal-btn modal-cancel" onclick="closeModalDirect()">إلغاء</button>
+    </div>
+  </div>
+</div>
 
 <header class="hdr">
   <div class="hdr-brand">
@@ -389,13 +452,42 @@ function makeBeinCard(ch){
   const d=document.createElement('div');
   d.className='ch-card'+(cur&&cur.type==='bein'&&cur.id===ch.id?' active':'');
   d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="${LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
-  d.onclick=()=>play(ch);return d;
+  d.onclick=()=>showPlayerModal(ch);return d;
 }
 function makeAlwanCard(ch){
   const d=document.createElement('div');
   d.className='ch-card alwan'+(cur&&cur.type==='alwan'&&cur.id===ch.id?' active':'');
   d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
-  d.onclick=()=>play(ch);return d;
+  d.onclick=()=>showPlayerModal(ch);return d;
+}
+
+/* ══ PLAYER MODAL ══ */
+let pendingCh=null;
+function showPlayerModal(ch){
+  pendingCh=ch;
+  document.getElementById('modalChName').textContent=ch.name;
+  document.getElementById('playerModal').classList.add('open');
+}
+function closeModalDirect(){
+  document.getElementById('playerModal').classList.remove('open');
+  pendingCh=null;
+}
+function closeModal(e){
+  if(e.target===document.getElementById('playerModal')) closeModalDirect();
+}
+function playInternal(){
+  closeModalDirect();
+  play(pendingCh||null);
+}
+function playVLC(){
+  if(!pendingCh) return;
+  const url=pendingCh.url;
+  closeModalDirect();
+  const storeUrl='https://play.google.com/store/apps/details?id=org.videolan.vlc';
+
+  // Android intent - يفتح VLC مباشرة، وإذا غير موجود يفتح Play Store تلقائياً
+  const intentUrl=`intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=vlc;package=org.videolan.vlc;S.browser_fallback_url=${encodeURIComponent(storeUrl)};end`;
+  window.location=intentUrl;
 }
 
 function render(bl,al){
