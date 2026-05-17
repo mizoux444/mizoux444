@@ -26,6 +26,7 @@
   --r:14px;
   --rs:10px;
 
+  /* ALWAN colors */
   --a1:#0a3d2e;
   --a2:#155f47;
   --a3:#1e8a64;
@@ -57,6 +58,459 @@ html,body{
 .brand-logo{
   height:36px;width:auto;object-fit:contain;
   filter:brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
+}
+
+.brand-name{
+  font-size:17px;font-weight:900;color:var(--white);letter-spacing:-0.3px;
+}
+.brand-name em{color:var(--p5);font-style:normal;}
+
+.hdr-right{display:flex;align-items:center;gap:8px;}
+
+.live-pill{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.25);
+  padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;color:var(--white);letter-spacing:.5px;
+}
+.ldot{
+  width:6px;height:6px;border-radius:50%;
+  background:#ff4d6a;box-shadow:0 0 6px #ff4d6a;
+  animation:blink 1.3s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.ig-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+  text-decoration:none;border:none;cursor:pointer;
+  transition:transform .2s;box-shadow:0 2px 10px rgba(0,0,0,0.3);
+}
+.ig-btn:hover{transform:scale(1.08);}
+.ig-btn svg{width:17px;height:17px;fill:#fff;}
+
+/* ══ PLAYER SECTION ══ */
+.player-wrap{
+  position:relative;background:#000;
+  width:100%;aspect-ratio:16/9;
+  overflow:hidden;
+}
+
+video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
+
+/* IDLE */
+.idle{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:linear-gradient(180deg,#1a0035 0%,#0d001f 100%);
+}
+.idle-logo{
+  height:70px;width:auto;object-fit:contain;
+  filter:brightness(0) invert(1) drop-shadow(0 0 20px rgba(164,114,255,0.6));
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.idle-txt{color:rgba(255,255,255,0.5);font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.idle-txt svg{width:15px;height:15px;stroke:var(--p4);fill:none;opacity:.8;}
+
+/* OVERLAYS */
+.ov{
+  position:absolute;inset:0;z-index:10;
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:rgba(10,0,25,0.88);
+}
+.ov.show{display:flex;}
+
+.spin{
+  width:46px;height:46px;border-radius:50%;
+  border:3px solid rgba(164,114,255,0.15);
+  border-top-color:var(--p3);border-right-color:var(--p5);
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ov-logo{height:28px;object-fit:contain;opacity:.5;}
+.ov-txt{color:rgba(255,255,255,0.55);font-size:13px;font-weight:600;}
+
+.err-ic{
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(200,16,46,.12);border:1px solid rgba(200,16,46,.3);
+  display:flex;align-items:center;justify-content:center;
+}
+.err-ic svg{width:26px;height:26px;stroke:var(--red);fill:none;stroke-width:1.8;}
+
+.retry-btn{
+  display:flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,var(--p2),var(--p3));
+  color:#fff;border:none;border-radius:var(--rs);
+  padding:10px 22px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 16px rgba(90,28,168,0.4);
+  transition:opacity .2s,transform .15s;margin-top:4px;
+}
+.retry-btn:hover{opacity:.88;transform:translateY(-1px);}
+.retry-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2;}
+
+/* NOW PLAYING MINI BAR */
+.np-mini{
+  background:var(--p1);
+  padding:10px 14px;
+  display:none;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.np-mini.show{display:flex;}
+.np-logo-sm{
+  height:32px;width:52px;object-fit:contain;
+  background:rgba(255,255,255,0.08);border-radius:6px;padding:3px;
+  border:1px solid rgba(255,255,255,0.15);flex-shrink:0;
+}
+.np-info{flex:1;min-width:0;}
+.np-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.np-live{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px;}
+.np-live .ldot{background:#30d890;box-shadow:0 0 5px #30d890;}
+.np-ctrl{display:flex;align-items:center;gap:7px;}
+.np-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .18s;flex-shrink:0;
+}
+.np-btn svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;}
+.np-btn:hover{background:rgba(255,255,255,0.2);}
+
+/* ══ CHANNELS SECTION ══ */
+.ch-section{padding:14px 12px;}
+
+.section-hdr{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.section-title{
+  font-size:13px;font-weight:900;color:var(--p1);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.section-title.alwan-title{
+  color:var(--a2);
+}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--p3),transparent);opacity:.25;}
+.section-line.alwan-line{background:linear-gradient(90deg,var(--a3),transparent);}
+.ch-count{
+  background:var(--p6);color:var(--p2);
+  font-size:11px;font-weight:700;
+  padding:2px 9px;border-radius:20px;
+}
+.ch-count.alwan-count{
+  background:var(--a6);color:var(--a2);
+}
+
+/* SEARCH */
+.srch-wrap{
+  display:flex;align-items:center;gap:8px;
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:var(--rs);
+  padding:9px 12px;margin-bottom:14px;
+  transition:border-color .2s;
+}
+.srch-wrap:focus-within{border-color:var(--p3);}
+.srch-wrap svg{width:15px;height:15px;stroke:var(--muted);fill:none;flex-shrink:0;}
+.srch-wrap input{
+  background:transparent;border:none;outline:none;
+  font-family:'Cairo',sans-serif;font-size:14px;color:var(--text);width:100%;
+}
+.srch-wrap input::placeholder{color:var(--muted);}
+
+/* CHANNEL GRID */
+.ch-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+
+/* ── beIN cards ── */
+.ch-card{
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:14px 8px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.ch-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--p2),var(--p4));
+  transform:scaleX(0);transform-origin:right;
+  transition:transform .25s;
+}
+.ch-card:hover{border-color:var(--p4);box-shadow:0 4px 18px rgba(90,28,168,0.12);}
+.ch-card:hover::before{transform:scaleX(1);}
+.ch-card.active{
+  background:linear-gradient(145deg,#f0e8ff,#ede0ff);
+  border-color:var(--p3);
+  box-shadow:0 6px 24px rgba(90,28,168,0.2);
+}
+.ch-card.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--p1),var(--p3));}
+
+/* ── ALWAN cards ── */
+.ch-card.alwan{
+  border-color:var(--border);
+}
+.ch-card.alwan::before{
+  background:linear-gradient(90deg,var(--a2),var(--a4));
+}
+.ch-card.alwan:hover{border-color:var(--a4);box-shadow:0 4px 18px rgba(30,138,100,0.12);}
+.ch-card.alwan.active{
+  background:linear-gradient(145deg,#e0faf3,#d0f5ea);
+  border-color:var(--a3);
+  box-shadow:0 6px 24px rgba(30,138,100,0.2);
+}
+.ch-card.alwan.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--a1),var(--a3));}
+
+.card-logo{
+  width:54px;height:54px;border-radius:10px;
+  object-fit:contain;background:#f0e8ff;padding:4px;
+  border:1.5px solid var(--border);
+  transition:border-color .2s;
+}
+.ch-card.alwan .card-logo{background:#e0faf3;}
+.ch-card.active .card-logo{border-color:var(--p3);background:#e4d0ff;}
+.ch-card.alwan.active .card-logo{border-color:var(--a3);background:#c0f0e0;}
+
+.card-num{
+  position:absolute;top:8px;right:8px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--p1);color:#fff;
+  font-size:9px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.ch-card.alwan .card-num{background:var(--a2);}
+.ch-card.active .card-num{background:var(--p3);}
+.ch-card.alwan.active .card-num{background:var(--a3);}
+
+.card-name{
+  font-size:12px;font-weight:700;color:var(--text);
+  text-align:center;line-height:1.3;
+}
+.ch-card.active .card-name{color:var(--p1);}
+.ch-card.alwan.active .card-name{color:var(--a1);}
+
+.card-badge{
+  display:flex;align-items:center;gap:4px;
+  background:var(--p6);
+  border-radius:20px;padding:2px 8px;
+}
+.ch-card.alwan .card-badge{background:var(--a6);}
+.ch-card.active .card-badge{background:var(--p5);}
+.ch-card.alwan.active .card-badge{background:var(--a5);}
+.card-badge .bd{width:5px;height:5px;border-radius:50%;background:var(--red);}
+.card-badge span{font-size:10px;font-weight:700;color:var(--p2);}
+.ch-card.alwan .card-badge span{color:var(--a2);}
+.ch-card.alwan.active .card-badge span{color:var(--a1);}
+
+/* ALWAN logo placeholder */
+.alwan-logo-ph{
+  width:54px;height:54px;border-radius:10px;
+  background:linear-gradient(135deg,var(--a2),var(--a4));
+  display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--border);
+  flex-shrink:0;
+}
+.alwan-logo-ph span{
+  font-size:9px;font-weight:900;color:#fff;
+  text-align:center;line-height:1.2;
+  padding:2px;
+}
+
+/* SECTION DIVIDER */
+.section-divider{
+  margin:8px 0 18px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  border-radius:2px;
+}
+
+/* EMPTY STATE */
+.empty{
+  grid-column:1/-1;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:30px;color:var(--muted);font-size:13px;
+}
+.empty svg{width:36px;height:36px;stroke:var(--p5);fill:none;opacity:.7;}
+
+/* ══ FOOTER ══ */
+.footer{
+  padding:16px;margin-top:4px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  border-top:1px solid var(--border);
+}
+.footer-logo{height:28px;object-fit:contain;opacity:.5;}
+.footer-txt{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;}
+.footer-ig{
+  display:inline-flex;align-items:center;gap:4px;
+  color:var(--p2);font-weight:700;text-decoration:none;
+  transition:opacity .2s;
+}
+.footer-ig:hover{opacity:.75;}
+.footer-ig svg{width:13px;height:13px;fill:var(--p2);}
+
+/* ══ DESKTOP LAYOUT ══ */
+@media(min-width:700px){
+  .app-desktop{
+    display:grid;grid-template-columns:300px 1fr;
+    height:calc(100vh - 60px);
+  }
+  .player-col{
+    display:flex;flex-direction:column;overflow:hidden;
+    border-right:1.5px solid var(--border);
+    background:var(--white);
+  }
+  .player-wrap{aspect-ratio:16/9;height:auto;}
+  .ch-section{overflow-y:auto;height:100%;}
+  .ch-grid{grid-template-columns:repeat(2,1fr);}
+  .footer{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <img class="brand-logo"
+      src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
+      alt="beIN" onerror="this.style.display='none'"/>
+    <div class="brand-name">Mizoux <em>TV</em></div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-pill"><span class="ldot"></span>مباشر</div>
+    <a class="ig-btn" href="https://www.instagram.com/mizoux444?igsh=Z2l2aWdxYjI5b3B5" target="_blank" rel="noopener" title="mizoux444">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- DESKTOP WRAPPER -->
+<div class="app-desktop">
+
+  <!-- PLAYER COLUMN (desktop only wraps this) -->
+  <div class="player-col">
+
+    <!-- VIDEO -->
+    <div class="player-wrap">
+      <div class="idle" id="idle">
+        <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-1px;animation:float 3s ease-in-out infinite;">Mizoux<span style="color:#a76ef0;">TV</span></div>
+        <div class="idle-txt">
+          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+          اختر قناة للمشاهدة
+        </div>
+      </div>
+
+      <div class="ov" id="loadOv">
+        <div class="spin"></div>
+        <img class="ov-logo"
+          src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
+          alt="" onerror="this.style.display='none'"/>
+        <div class="ov-txt" id="loadTxt">جاري التحميل...</div>
+      </div>
+
+      <div class="ov" id="errOv">
+        <div class="err-ic">
+          <svg viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        </div>
+        <div class="ov-txt" id="errTxt">تعذّر تحميل القناة</div>
+        <button class="retry-btn" onclick="doRetry()">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg>
+          إعادة المحاولة
+        </button>
+      </div>
+
+      <video id="vid" controls playsinline></video>
+    </div>
+
+    <!-- NOW PLAYING MINI BAR -->
+    <div class="np-mini" id="npMini">
+      <img class="np-logo-sm"
+        src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
+        alt="beIN" onerror="this.style.display='none'"/>
+      <div class="np-info">
+        <div class="np-name" id="npName">—</div>
+        <div class="np-live"><span class="ldot"></span>بث مباشر · HD</div>
+      </div>
+      <div class="np-ctrl">
+        <button class="np-btn" id="muteBtn" onclick="toggleMute()" title="كتم">
+          <svg id="volSvg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="np-btn" onclick="goFS()" title="ملء الشاشة">
+          <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /player-col -->
+
+  <!-- CHANNELS LIST -->
+  <section class="ch-section">
+
+    <!-- SEARCH -->
+    <div style="padding-top:2px;margin-bottom:0;">
+      <div class="srch-wrap" style="margin-bottom:14px;">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="srchIn" placeholder="ابحث عن قناة..." oninput="doFilter()"/>
+      </div>
+    </div>
+
+    <!-- beIN SECTION -->
+    <div id="beinSection">
+      <div class="section-hdr">
+        <div class="section-title">beIN Sports</div>
+        <div class="section-line"></div>
+        <div class="ch-count" id="beinCount">9 قنوات</div>
+      </div>
+      <div class="ch-grid" id="beinGrid"></div>
+    </div>
+
+    <!-- ALWAN SECTION -->
+    <div id="alwanSection" style="margin-top:4px;">
+      <div class="section-hdr">
+        <div class="section-title alwan-title">ALWAN</div>
+        <div class="section-line alwan-line"></div>
+        <div class="ch-count alwan-count" id="alwanCount">9 قنوات</div>
+      </div>
+      <div class="ch-grid" id="alwanGrid"></div>
+    </div>
+
+    <div class="footer">
+      <img class="footer-logo"
+        src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png"
+        alt="beIN" onerror="this.style.display='none'"/>
+      <div class="footer-txt">
+        صُنع بـ ♥ بواسطة
+        <a class="footer-ig"
+          href="https://www.instagram.com/mizoux444?igsh=Z2l2aWdxYjI5b3B5"
+          target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          mizoux444
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /app-desktop -->
+
+<script>
+const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
+
+const BEIN_CHS=[
+  {id:1,name:'beIN Sports 1',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8',type:'bein'},
+  {id:2,name:'beIN Sports 2',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8',type:'bein'},
+  {id:3,name:'beIN Sports 3',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8',type:'bein'},
+  {id:4,name:'beIN Sports 4',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8',type:'bein'},
+  {id:5,name:'beIN Sports 5',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8',type:'bein'},
+  {id:6,name:'beIN Sports 6',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8',type:'bein'},
+  {id:7,name:'beIN Sports 7',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8',type:'bein'},
+  {id:8,name:'beIN Sports 8',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8',type:'bein'},
+  {id:9,name:'beIN Sports 9',url:'https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev  filter:brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
 }
 
 .brand-name{
