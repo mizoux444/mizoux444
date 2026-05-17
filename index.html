@@ -484,7 +484,9 @@ function playVLC(){
   if(!pendingCh) return;
   const url=pendingCh.url;
   closeModalDirect();
-  window.location='vlc://'+url;
+  // Android intent الصحيح لفتح رابط HLS في VLC
+  const intentUrl=`intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=https;package=org.videolan.vlc;end`;
+  window.location=intentUrl;
 }
 
 function render(bl,al){
