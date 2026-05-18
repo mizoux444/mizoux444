@@ -506,16 +506,22 @@ function play(ch){
 function loadStream(url){
   if(hls){hls.destroy();hls=null;}
   const isBent=url.includes('ch-arabic.buzz');
-  const streamUrl=isBent
-    ? 'https://corsproxy.io/?url='+encodeURIComponent(url)
-    : url;
+  const hlsConfig={
+    enableWorker:true,
+    lowLatencyMode:true,
+    backBufferLength:30,
+    xhrSetup: isBent ? function(xhr){
+      xhr.setRequestHeader('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36');
+      xhr.setRequestHeader('Referer','https://x.com/');
+    } : undefined
+  };
   if(Hls.isSupported()){
-    hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:30});
-    hls.loadSource(streamUrl);hls.attachMedia(vid);
+    hls=new Hls(hlsConfig);
+    hls.loadSource(url);hls.attachMedia(vid);
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();vid.play().catch(()=>{});});
     hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
   } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
-    vid.src=streamUrl;
+    vid.src=url;
     vid.addEventListener('loadedmetadata',()=>{hideL();vid.play();},{once:true});
     vid.addEventListener('error',()=>{hideL();showE('تعذّر تشغيل القناة');},{once:true});
   } else {hideL();showE('المتصفح لا يدعم HLS');}
