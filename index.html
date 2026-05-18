@@ -484,12 +484,9 @@ function doFilter(){
 
 function play(ch){
   cur=ch;retryUrl=ch.url;
-  if(!document.body.classList.contains('cinema-mode')) playerWrap.appendChild(vid);
   render(BEIN_CHS,ALWAN_CHS);
-  document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
-  document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
   const logos={
     bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
     alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
@@ -499,25 +496,19 @@ function play(ch){
   npLogo.src=logos[ch.type]||logos.bein;
   npLogo.style.display='';
 
-  const bentFrame=document.getElementById('bentFrame');
-
   if(ch.type==='bent'){
-    // أوقف المشغل الرئيسي وأظهر الـ iframe
-    if(hls){hls.destroy();hls=null;}
-    vid.pause();vid.src='';
-    vid.style.display='none';
-    bentFrame.style.display='block';
-    hideL();hideE();
-    // أرسل الرابط للـ iframe
-    bentFrame.contentWindow.postMessage({url:ch.url},'*');
-  } else {
-    // أخفِ الـ iframe وأظهر المشغل العادي
-    bentFrame.style.display='none';
-    bentFrame.contentWindow.postMessage({url:''},'*');
-    vid.style.display='';
-    showL();hideE();loadStream(ch.url);
+    // فتح قنوات ENT في صفحة مستقلة تشتغل بدون CORS
+    window.open('bent.html?url='+encodeURIComponent(ch.url)+'&name='+encodeURIComponent(ch.name),'_blank');
+    return;
   }
 
+  if(!document.body.classList.contains('cinema-mode')) playerWrap.appendChild(vid);
+  document.getElementById('idle').style.display='none';
+  document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
+  const bentFrame=document.getElementById('bentFrame');
+  bentFrame.style.display='none';
+  vid.style.display='';
+  showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
