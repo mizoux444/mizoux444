@@ -282,6 +282,7 @@ body.cinema-mode .cinema-close{display:flex;}
         </button>
       </div>
       <video id="vid" controls playsinline webkit-playsinline></video>
+      <video id="vidBent" controls playsinline webkit-playsinline style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;background:#000;z-index:4;"></video>
     </div>
 
     <div class="np-mini" id="npMini">
@@ -352,8 +353,9 @@ const BENT_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main
 const CHANNELS_URL='https://raw.githubusercontent.com/mizoux444/mizoux444/refs/heads/main/channels.json';
 
 let BEIN_CHS=[], ALWAN_CHS=[], ALKASS_CHS=[], BENT_CHS=[];
-let cur=null,hls=null,retryUrl=null;
+let cur=null,hls=null,hlsBent=null,retryUrl=null;
 const vid=document.getElementById('vid');
+const vidBent=document.getElementById('vidBent');
 const cinemaOverlay=document.getElementById('cinemaOverlay');
 const playerWrap=document.getElementById('playerWrap');
 
@@ -497,23 +499,30 @@ function play(ch){
   const npLogo=document.getElementById('npLogo');
   npLogo.src=logos[ch.type]||logos.bein;
   npLogo.style.display='';
-  showL();hideE();loadStream(ch.url);
+
+  if(ch.type==='bent'){
+    // أوقف المشغل العادي
+    if(hls){hls.destroy();hls=null;}
+    vid.pause();vid.src='';vid.style.display='none';
+    // شغّل على vidBent مع headers
+    vidBent.style.display='block';
+    loadStreamBent(ch.url);
+  } else {
+    // أوقف مشغل ENT
+    if(hlsBent){hlsBent.destroy();hlsBent=null;}
+    vidBent.pause();vidBent.src='';vidBent.style.display='none';
+    vid.style.display='block';
+    showL();hideE();loadStream(ch.url);
+  }
+
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function loadStream(url){
   if(hls){hls.destroy();hls=null;}
-  const isBent=url.includes('ch-arabic.buzz');
-  const cfg={
-    enableWorker:true,lowLatencyMode:true,backBufferLength:30,
-    xhrSetup:isBent?function(xhr){
-      xhr.setRequestHeader('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36');
-      xhr.setRequestHeader('Referer','https://x.com/');
-    }:undefined
-  };
   if(Hls.isSupported()){
-    hls=new Hls(cfg);
+    hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:30});
     hls.loadSource(url);hls.attachMedia(vid);
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();vid.play().catch(()=>{});});
     hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
@@ -524,7 +533,33 @@ function loadStream(url){
   } else {hideL();showE('المتصفح لا يدعم HLS');}
 }
 
-function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl);}}
+function loadStreamBent(url){
+  if(hlsBent){hlsBent.destroy();hlsBent=null;}
+  showL();hideE();
+  if(Hls.isSupported()){
+    hlsBent=new Hls({
+      xhrSetup:function(xhr){
+        xhr.setRequestHeader('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36');
+        xhr.setRequestHeader('Referer','https://x.com/');
+      }
+    });
+    hlsBent.loadSource(url);
+    hlsBent.attachMedia(vidBent);
+    hlsBent.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();vidBent.play().catch(()=>{});});
+    hlsBent.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
+  } else if(vidBent.canPlayType('application/vnd.apple.mpegurl')){
+    vidBent.src=url;
+    vidBent.addEventListener('loadedmetadata',()=>{hideL();vidBent.play();},{once:true});
+    vidBent.addEventListener('error',()=>{hideL();showE('تعذّر تشغيل القناة');},{once:true});
+  } else {hideL();showE('المتصفح لا يدعم HLS');}
+}
+
+function doRetry(){
+  if(!retryUrl) return;
+  hideE();showL();
+  if(cur&&cur.type==='bent') loadStreamBent(retryUrl);
+  else loadStream(retryUrl);
+}
 function showL(){document.getElementById('loadOv').classList.add('show');}
 function hideL(){document.getElementById('loadOv').classList.remove('show');}
 function showE(m){document.getElementById('errTxt').textContent=m;document.getElementById('errOv').classList.add('show');}
