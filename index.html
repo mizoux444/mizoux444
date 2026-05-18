@@ -182,25 +182,6 @@ body.cinema-mode .cinema-close{display:flex;}
 .alkass-line{background:linear-gradient(90deg,var(--k2),transparent)!important;}
 .alkass-count{color:var(--k3)!important;}
 
-/* ══ beIN ENT STYLES ══ */
-:root{--e1:#7b3a00;--e2:#b85c00;--e3:#e07800;--e4:#ffaa33;--e5:#ffd999;--e6:#fff5e0;}
-.ch-card.bent::before{background:linear-gradient(90deg,var(--e2),var(--e4));}
-.ch-card.bent .card-num{background:var(--e2);}
-.ch-card.bent .card-logo{background:var(--e6);}
-.ch-card.bent .card-badge{background:var(--e6);}
-.ch-card.bent .card-badge span{color:var(--e2);}
-.ch-card.bent:hover{border-color:var(--e4);box-shadow:0 4px 18px rgba(184,92,0,0.12);}
-.ch-card.bent.active{background:linear-gradient(145deg,#fff5e0,#ffe8c0);border-color:var(--e3);box-shadow:0 6px 24px rgba(184,92,0,0.2);}
-.ch-card.bent.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--e1),var(--e3));}
-.ch-card.bent.active .card-num{background:var(--e3);}
-.ch-card.bent.active .card-logo{border-color:var(--e3);background:#ffd0a0;}
-.ch-card.bent.active .card-name{color:var(--e1);}
-.ch-card.bent.active .card-badge{background:var(--e5);}
-.ch-card.bent.active .card-badge span{color:var(--e1);}
-.bent-title{color:var(--e1);}
-.bent-line{background:linear-gradient(90deg,var(--e2),transparent)!important;}
-.bent-count{color:var(--e3)!important;}
-
 /* ══ HORIZONTAL SCROLL GRID للكاس ══ */
 .ch-hscroll{
   display:flex;gap:10px;
@@ -324,14 +305,6 @@ body.cinema-mode .cinema-close{display:flex;}
       </div>
       <div class="ch-grid" id="alwanGrid"></div>
     </div>
-    <div id="bentSection" style="margin-top:4px;">
-      <div class="section-hdr">
-        <div class="section-title bent-title">beIN Entertainment</div>
-        <div class="section-line bent-line"></div>
-        <div class="ch-count bent-count" id="bentCount">12 قنوات</div>
-      </div>
-      <div class="ch-grid" id="bentGrid"></div>
-    </div>
     <div class="footer">
       <img class="footer-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="beIN" onerror="this.style.display='none'"/>
       <div class="footer-txt">
@@ -348,10 +321,9 @@ body.cinema-mode .cinema-close{display:flex;}
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
 const ALKASS_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(2).jpeg';
-const BENT_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/bein-261212.png';
 const CHANNELS_URL='https://raw.githubusercontent.com/mizoux444/mizoux444/refs/heads/main/channels.json';
 
-let BEIN_CHS=[], ALWAN_CHS=[], ALKASS_CHS=[], BENT_CHS=[];
+let BEIN_CHS=[], ALWAN_CHS=[], ALKASS_CHS=[];
 let cur=null,hls=null,retryUrl=null;
 const vid=document.getElementById('vid');
 const cinemaOverlay=document.getElementById('cinemaOverlay');
@@ -442,12 +414,6 @@ function makeAlwanCard(ch){
   d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
   d.onclick=()=>play(ch);return d;
 }
-function makeBentCard(ch){
-  const d=document.createElement('div');
-  d.className='ch-card bent'+(cur&&cur.type==='bent'&&cur.id===ch.id?' active':'');
-  d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="${BENT_LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
-  d.onclick=()=>play(ch);return d;
-}
 function makeAlkassCard(ch){
   const d=document.createElement('div');
   d.className='ch-card alkass'+(cur&&cur.type==='alkass'&&cur.id===ch.id?' active':'');
@@ -456,19 +422,16 @@ function makeAlkassCard(ch){
 }
 
 function render(bl,al){
-  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid'),eg=document.getElementById('bentGrid');
-  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection'),es=document.getElementById('bentSection');
-  bg.innerHTML='';ag.innerHTML='';eg.innerHTML='';
+  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid');
+  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection');
+  bg.innerHTML='';ag.innerHTML='';
   bl.length?bl.forEach(c=>bg.appendChild(makeBeinCard(c))):bg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
   al.length?al.forEach(c=>ag.appendChild(makeAlwanCard(c))):ag.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
-  BENT_CHS.forEach(c=>eg.appendChild(makeBentCard(c)));
   const q=document.getElementById('srchIn').value;
   bs.style.display=bl.length===0&&q?'none':'block';
   as.style.display=al.length===0&&q?'none':'block';
-  es.style.display=q?'none':'block';
   document.getElementById('beinCount').textContent=bl.length+' قنوات';
   document.getElementById('alwanCount').textContent=al.length+' قنوات';
-  document.getElementById('bentCount').textContent=BENT_CHS.length+' قنوات';
 }
 
 function doFilter(){
