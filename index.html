@@ -282,6 +282,7 @@ body.cinema-mode .cinema-close{display:flex;}
         </button>
       </div>
       <video id="vid" controls playsinline webkit-playsinline></video>
+      <iframe id="bentFrame" src="bent.html" style="display:none;width:100%;height:100%;position:absolute;inset:0;border:none;border-radius:inherit;background:#000;z-index:5;"></iframe>
     </div>
 
     <div class="np-mini" id="npMini">
@@ -489,7 +490,6 @@ function play(ch){
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
-  // تغيير اللوغو مع القناة
   const logos={
     bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
     alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
@@ -498,7 +498,26 @@ function play(ch){
   const npLogo=document.getElementById('npLogo');
   npLogo.src=logos[ch.type]||logos.bein;
   npLogo.style.display='';
-  showL();hideE();loadStream(ch.url);
+
+  const bentFrame=document.getElementById('bentFrame');
+
+  if(ch.type==='bent'){
+    // أوقف المشغل الرئيسي وأظهر الـ iframe
+    if(hls){hls.destroy();hls=null;}
+    vid.pause();vid.src='';
+    vid.style.display='none';
+    bentFrame.style.display='block';
+    hideL();hideE();
+    // أرسل الرابط للـ iframe
+    bentFrame.contentWindow.postMessage({url:ch.url},'*');
+  } else {
+    // أخفِ الـ iframe وأظهر المشغل العادي
+    bentFrame.style.display='none';
+    bentFrame.contentWindow.postMessage({url:''},'*');
+    vid.style.display='';
+    showL();hideE();loadStream(ch.url);
+  }
+
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
