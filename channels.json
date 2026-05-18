@@ -1,36 +1,148 @@
 {
   "bein": [
-    {"id":1,"name":"beIN Sports 1","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8"},
-    {"id":2,"name":"beIN Sports 2","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8"},
-    {"id":3,"name":"beIN Sports 3","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8"},
-    {"id":4,"name":"beIN Sports 4","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8"},
-    {"id":5,"name":"beIN Sports 5","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8"},
-    {"id":6,"name":"beIN Sports 6","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8"},
-    {"id":7,"name":"beIN Sports 7","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8"},
-    {"id":8,"name":"beIN Sports 8","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8"},
-    {"id":9,"name":"beIN Sports 9","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8"}
+    {
+      "id": 1,
+      "name": "beIN Sports 1",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein1.m3u8"
+    },
+    {
+      "id": 2,
+      "name": "beIN Sports 2",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein2.m3u8"
+    },
+    {
+      "id": 3,
+      "name": "beIN Sports 3",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein3.m3u8"
+    },
+    {
+      "id": 4,
+      "name": "beIN Sports 4",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein4.m3u8"
+    },
+    {
+      "id": 5,
+      "name": "beIN Sports 5",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein5.m3u8"
+    },
+    {
+      "id": 6,
+      "name": "beIN Sports 6",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein6.m3u8"
+    },
+    {
+      "id": 7,
+      "name": "beIN Sports 7",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein7.m3u8"
+    },
+    {
+      "id": 8,
+      "name": "beIN Sports 8",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8"
+    },
+    {
+      "id": 9,
+      "name": "beIN Sports 9",
+      "url": "https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8"
+    }
   ],
   "alwan": [
-    {"id":3,"name":"ALWAN 3","url":"https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8"},
-    {"id":4,"name":"ALWAN 4","url":"https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8"},
-    {"id":5,"name":"ALWAN 5","url":"https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8"},
-    {"id":6,"name":"ALWAN 6","url":"https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8"},
-    {"id":7,"name":"ALWAN 7","url":"https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8"},
-    {"id":8,"name":"ALWAN 8","url":"https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8"},
-    {"id":9,"name":"ALWAN 9","url":"https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8"}
+    {
+      "id": 3,
+      "name": "ALWAN 3",
+      "url": "https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8"
+    },
+    {
+      "id": 4,
+      "name": "ALWAN 4",
+      "url": "https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8"
+    },
+    {
+      "id": 5,
+      "name": "ALWAN 5",
+      "url": "https://stream.camcloud.stream/stream/6478d42a682b/playlist.m3u8"
+    },
+    {
+      "id": 6,
+      "name": "ALWAN 6",
+      "url": "https://stream.camcloud.stream/stream/4daee3f6e9e7/playlist.m3u8"
+    },
+    {
+      "id": 7,
+      "name": "ALWAN 7",
+      "url": "https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8"
+    },
+    {
+      "id": 8,
+      "name": "ALWAN 8",
+      "url": "https://stream.camcloud.stream/stream/c28b01f8c96e/playlist.m3u8"
+    },
+    {
+      "id": 9,
+      "name": "ALWAN 9",
+      "url": "https://stream.camcloud.stream/stream/bb7d90bf39d8/playlist.m3u8"
+    }
   ],
   "bent": [
-    {"id":1,"name":"beIN MOVIES 1","url":"http://apk.ch-arabic.buzz/live/076/index.m3u8?t=PrimeTvPlus"},
-    {"id":2,"name":"beIN MOVIES 2","url":"http://apk.ch-arabic.buzz/live/077/index.m3u8?t=PrimeTvPlus"},
-    {"id":3,"name":"beIN MOVIES 3","url":"http://apk.ch-arabic.buzz/live/078/index.m3u8?t=PrimeTvPlus"},
-    {"id":4,"name":"beIN MOVIES 4","url":"http://apk.ch-arabic.buzz/live/079/index.m3u8?t=PrimeTvPlus"},
-    {"id":5,"name":"beIN SÉRIES 1","url":"http://apk.ch-arabic.buzz/live/080/index.m3u8?t=PrimeTvPlus"},
-    {"id":6,"name":"beIN SÉRIES 2","url":"http://apk.ch-arabic.buzz/live/081/index.m3u8?t=PrimeTvPlus"},
-    {"id":7,"name":"beIN DRAMA","url":"http://apk.ch-arabic.buzz/live/072/index.m3u8?t=PrimeTvPlus"},
-    {"id":8,"name":"beIN GOURMET","url":"http://apk.ch-arabic.buzz/live/074/index.m3u8?t=PrimeTvPlus"},
-    {"id":9,"name":"beIN FATAFEAT","url":"http://apk.ch-arabic.buzz/live/073/index.m3u8?t=PrimeTvPlus"},
-    {"id":10,"name":"beIN JEEM","url":"http://apk.ch-arabic.buzz/live/075/index.m3u8?t=PrimeTvPlus"},
-    {"id":11,"name":"beIN BARAEM","url":"http://apk.ch-arabic.buzz/live/070/index.m3u8?t=PrimeTvPlus"},
-    {"id":12,"name":"beIN BOOMERANG","url":"http://apk.ch-arabic.buzz/live/082/index.m3u8?t=PrimeTvPlus"}
+    {
+      "id": 1,
+      "name": "beIN MOVIES 1",
+      "url": "http://apk.ch-arabic.buzz/live/076/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 2,
+      "name": "beIN MOVIES 2",
+      "url": "http://apk.ch-arabic.buzz/live/077/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 3,
+      "name": "beIN MOVIES 3",
+      "url": "http://apk.ch-arabic.buzz/live/078/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 4,
+      "name": "beIN MOVIES 4",
+      "url": "http://apk.ch-arabic.buzz/live/079/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 5,
+      "name": "beIN SERIES 1",
+      "url": "http://apk.ch-arabic.buzz/live/080/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 6,
+      "name": "beIN SERIES 2",
+      "url": "http://apk.ch-arabic.buzz/live/081/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 7,
+      "name": "beIN DRAMA",
+      "url": "http://apk.ch-arabic.buzz/live/072/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 8,
+      "name": "beIN GOURMET",
+      "url": "http://apk.ch-arabic.buzz/live/074/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 9,
+      "name": "beIN FATAFEAT",
+      "url": "http://apk.ch-arabic.buzz/live/073/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 10,
+      "name": "beIN JEEM",
+      "url": "http://apk.ch-arabic.buzz/live/075/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 11,
+      "name": "beIN BARAEM",
+      "url": "http://apk.ch-arabic.buzz/live/070/index.m3u8?t=PrimeTvPlus"
+    },
+    {
+      "id": 12,
+      "name": "beIN BOOMERANG",
+      "url": "http://apk.ch-arabic.buzz/live/082/index.m3u8?t=PrimeTvPlus"
+    }
   ]
 }
