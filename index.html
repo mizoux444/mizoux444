@@ -335,14 +335,7 @@ body.cinema-mode .cinema-close{display:flex;}
       </div>
       <div class="ch-grid" id="beinGrid"></div>
     </div>
-    <div id="beinmaxSection" style="margin-top:4px;">
-      <div class="section-hdr">
-        <div class="section-title beinmax-title">beIN SPORTS MAX</div>
-        <div class="section-line beinmax-line"></div>
-        <div class="ch-count beinmax-count" id="beinmaxCount">6 قنوات</div>
-      </div>
-      <div class="ch-grid" id="beinmaxGrid"></div>
-    </div>
+
     <div id="alwanSection" style="margin-top:4px;">
       <div class="section-hdr">
         <div class="section-title alwan-title">ALWAN</div>
@@ -367,10 +360,9 @@ body.cinema-mode .cinema-close{display:flex;}
 <script>
 const LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png';
 const ALKASS_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(2).jpeg';
-const BEINMAX_LOGO='https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/Logo_beIN_SPORTS_MAX.png';
 const CHANNELS_URL='https://raw.githubusercontent.com/mizoux444/mizoux444/refs/heads/main/channels.json';
 
-let BEIN_CHS=[], ALWAN_CHS=[], ALKASS_CHS=[], BEINMAX_CHS=[];
+let BEIN_CHS=[], ALWAN_CHS=[], ALKASS_CHS=[];
 let cur=null,hls=null,retryUrl=null;
 const vid=document.getElementById('vid');
 const cinemaOverlay=document.getElementById('cinemaOverlay');
@@ -474,38 +466,33 @@ function makeAlkassCard(ch){
   d.onclick=()=>play(ch);return d;
 }
 
-function render(bl,al,ml){
-  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid'),mg=document.getElementById('beinmaxGrid');
-  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection'),ms=document.getElementById('beinmaxSection');
-  bg.innerHTML='';ag.innerHTML='';mg.innerHTML='';
+function render(bl,al){
+  const bg=document.getElementById('beinGrid'),ag=document.getElementById('alwanGrid');
+  const bs=document.getElementById('beinSection'),as=document.getElementById('alwanSection');
+  bg.innerHTML='';ag.innerHTML='';
   bl.length?bl.forEach(c=>bg.appendChild(makeBeinCard(c))):bg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
   al.length?al.forEach(c=>ag.appendChild(makeAlwanCard(c))):ag.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
-  ml.length?ml.forEach(c=>mg.appendChild(makeMaxCard(c))):mg.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>لا توجد نتائج</span></div>';
   const q=document.getElementById('srchIn').value;
   bs.style.display=bl.length===0&&q?'none':'block';
   as.style.display=al.length===0&&q?'none':'block';
-  ms.style.display=ml.length===0&&q?'none':'block';
   document.getElementById('beinCount').textContent=bl.length+' قنوات';
   document.getElementById('alwanCount').textContent=al.length+' قنوات';
-  document.getElementById('beinmaxCount').textContent=ml.length+' قنوات';
 }
 
 function doFilter(){
   const q=document.getElementById('srchIn').value.trim().toLowerCase();
-  if(!q){render(BEIN_CHS,ALWAN_CHS,BEINMAX_CHS);return;}
+  if(!q){render(BEIN_CHS,ALWAN_CHS);return;}
   const b=BEIN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
   const a=ALWAN_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
-  const m=BEINMAX_CHS.filter(c=>c.name.toLowerCase().includes(q)||String(c.id).includes(q));
-  render(b,a,m);
+  render(b,a);
   document.getElementById('beinSection').style.display=b.length?'block':'none';
   document.getElementById('alwanSection').style.display=a.length?'block':'none';
-  document.getElementById('beinmaxSection').style.display=m.length?'block':'none';
 }
 
 function play(ch){
   cur=ch;retryUrl=ch.url;
   if(!document.body.classList.contains('cinema-mode')) playerWrap.appendChild(vid);
-  render(BEIN_CHS,ALWAN_CHS,BEINMAX_CHS);
+  render(BEIN_CHS,ALWAN_CHS);
   document.getElementById('idle').style.display='none';
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
@@ -514,28 +501,25 @@ function play(ch){
   const logos={
     bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
     alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
-    beinmax:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/Logo_beIN_SPORTS_MAX.png',
   };
   const npLogo=document.getElementById('npLogo');
   npLogo.src=logos[ch.type]||logos.bein;
   npLogo.style.display='';
-  showL();hideE();loadStream(ch.url, ch.type==='beinmax');
+  showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 let errTimer=null;
 let stallTimer=null;
-let isMaxChannel=false;
 
 function clearTimers(){
   if(errTimer){clearTimeout(errTimer);errTimer=null;}
   if(stallTimer){clearInterval(stallTimer);stallTimer=null;}
 }
 
-function loadStream(url,isMax){
+function loadStream(url){
   clearTimers();
-  isMaxChannel=!!isMax;
   if(hls){hls.destroy();hls=null;}
 
   // وقت الانتظار قبل إظهار رسالة الخطأ: 30 ثانية لجميع القنوات
@@ -563,22 +547,17 @@ function loadStream(url,isMax){
     hls.attachMedia(vid);
 
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{
-      clearTimers();
-      hideL();
       vid.play().catch(()=>{});
     });
 
     hls.on(Hls.Events.ERROR,(_,d)=>{
       if(d.fatal){
-        // عند خطأ فادح: انتظر قبل الإظهار — قد يتعافى HLS.js وحده
         if(!errTimer){
           errTimer=setTimeout(()=>{
             hideL();
             showE('تعذّر تحميل البث');
           }, errDelay);
         }
-      } else {
-        // خطأ غير فادح (انقطاع مؤقت) — اترك HLS.js يحاول وحده
       }
     });
 
@@ -593,6 +572,7 @@ function loadStream(url,isMax){
     });
     vid.addEventListener('playing', ()=>{
       clearTimers();
+      hideL();
       hideE();
     });
     window.addEventListener('online', ()=>{
@@ -604,7 +584,7 @@ function loadStream(url,isMax){
 
   } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
     vid.src=url;
-    vid.addEventListener('loadedmetadata',()=>{clearTimers();hideL();vid.play();},{once:true});
+    vid.addEventListener('playing',()=>{clearTimers();hideL();hideE();},{once:true});
     vid.addEventListener('error',()=>{
       errTimer=setTimeout(()=>{hideL();showE('تعذّر تشغيل القناة');}, errDelay);
     },{once:true});
@@ -613,7 +593,7 @@ function loadStream(url,isMax){
   }
 }
 
-function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl,isMaxChannel);}}
+function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl);}}
 function showL(){document.getElementById('loadOv').classList.add('show');}
 function hideL(){document.getElementById('loadOv').classList.remove('show');}
 function showE(m){document.getElementById('errTxt').textContent=m;document.getElementById('errOv').classList.add('show');}
@@ -628,11 +608,10 @@ async function initChannels(){
   try{
     const res=await fetch(CHANNELS_URL+'?t='+Date.now());
     const data=await res.json();
-    BEIN_CHS   =(data.bein    ||[]).map(c=>({...c,type:'bein'}));
-    ALWAN_CHS  =(data.alwan   ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
-    BEINMAX_CHS=(data.beinmax ||[]).map(c=>({...c,type:'beinmax'}));
+    BEIN_CHS =(data.bein  ||[]).map(c=>({...c,type:'bein'}));
+    ALWAN_CHS=(data.alwan ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
   }catch(e){console.warn('فشل جلب القنوات',e);}
-  render(BEIN_CHS,ALWAN_CHS,BEINMAX_CHS);
+  render(BEIN_CHS,ALWAN_CHS);
 }
 initChannels();
 </script>

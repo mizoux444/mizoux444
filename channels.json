@@ -10,14 +10,6 @@
     {"id":8,"name":"beIN Sports 8","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein8.m3u8"},
     {"id":9,"name":"beIN Sports 9","url":"https://pub-5d579cce1f8f4f8faf00f60ef6a6b791.r2.dev/Bein9.m3u8"}
   ],
-  "beinmax": [
-    {"id":1,"name":"beIN SPORTS MAX 1 AR","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997525&extension=ts&play_token=PrimrTvPlus"},
-    {"id":2,"name":"beIN SPORTS MAX 2 AR","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997524&extension=ts&play_token=PrimrTvPlus"},
-    {"id":3,"name":"beIN SPORTS MAX 3 EN","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997523&extension=ts&play_token=PrimrTvPlus"},
-    {"id":4,"name":"beIN SPORTS MAX 4 EN","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997522&extension=ts&play_token=PrimrTvPlus"},
-    {"id":5,"name":"beIN SPORTS MAX 5 FR","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997521&extension=ts&play_token=PrimrTvPlus"},
-    {"id":6,"name":"beIN SPORTS MAX 6 FR","url":"http://204.52.191.12/play/live.php?mac=00:1A:79:48:BD:69&stream=1997520&extension=ts&play_token=PrimrTvPlus"}
-  ],
   "alwan": [
     {"id":3,"name":"ALWAN 3","url":"https://stream.camcloud.stream/stream/456de69d002b/playlist.m3u8"},
     {"id":4,"name":"ALWAN 4","url":"https://stream.camcloud.stream/stream/fd1979023964/playlist.m3u8"},
