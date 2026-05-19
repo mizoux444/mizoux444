@@ -531,31 +531,7 @@ function loadStream(url){
   const hlsConfig={
     enableWorker:true,
     lowLatencyMode:true,
-    // بدء فوري بأول قطعة
-    startLevel:0,
-    startFragPrefetch:true,
-    // بافر في أدنى حد ممكن للبدء الفوري
-    liveSyncDurationCount:1,
-    liveMaxLatencyDurationCount:2,
-    maxBufferLength:4,
-    maxMaxBufferLength:8,
-    maxBufferHole:0.1,
-    backBufferLength:10,
-    // أسرع تحميل ممكن
-    fragLoadingTimeOut:5000,
-    fragLoadingMaxRetry:3,
-    fragLoadingRetryDelay:200,
-    manifestLoadingTimeOut:5000,
-    manifestLoadingMaxRetry:3,
-    manifestLoadingRetryDelay:200,
-    levelLoadingTimeOut:5000,
-    levelLoadingMaxRetry:3,
-    levelLoadingRetryDelay:200,
-    // تكيّف فوري مع الشبكة
-    abrEwmaFastLive:1.5,
-    abrEwmaSlowLive:3,
-    abrBandWidthFactor:0.9,
-    abrBandWidthUpFactor:0.7,
+    backBufferLength:30,
   };
 
   if(Hls.isSupported()){
@@ -579,14 +555,6 @@ function loadStream(url){
     });
 
     // استئناف فوري عند رجوع الإنترنت
-    vid.addEventListener('waiting', ()=>{
-      if(stallTimer) return;
-      stallTimer = setInterval(()=>{
-        if(navigator.onLine && hls && cur){
-          hls.startLoad();
-        }
-      }, 1000);
-    });
     vid.addEventListener('playing', ()=>{
       clearTimers();
       hideL();
