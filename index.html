@@ -337,7 +337,7 @@ body.cinema-mode .cinema-close{display:flex;}
     </div>
     <div id="beinmaxSection" style="margin-top:4px;">
       <div class="section-hdr">
-        <img src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/Logo_beIN_SPORTS_MAX.png" style="height:22px;object-fit:contain;" alt="beIN SPORTS MAX" onerror="this.style.display='none'"/>
+        <div class="section-title beinmax-title">beIN SPORTS MAX</div>
         <div class="section-line beinmax-line"></div>
         <div class="ch-count beinmax-count" id="beinmaxCount">6 قنوات</div>
       </div>
@@ -554,12 +554,10 @@ async function initChannels(){
   try{
     const res=await fetch(CHANNELS_URL+'?t='+Date.now());
     const data=await res.json();
-    BEIN_CHS  =(data.bein    ||[]).map(c=>({...c,type:'bein'}));
-    ALWAN_CHS =(data.alwan   ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
-    BEINMAX_CHS=(data.beinmax||[]).map(c=>({...c,type:'beinmax'}));
-  }catch(e){
-    console.warn('فشل جلب القنوات',e);
-  }
+    BEIN_CHS   =(data.bein    ||[]).map(c=>({...c,type:'bein'}));
+    ALWAN_CHS  =(data.alwan   ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
+    BEINMAX_CHS=(data.beinmax ||[]).map(c=>({...c,type:'beinmax'}));
+  }catch(e){console.warn('فشل جلب القنوات',e);}
   render(BEIN_CHS,ALWAN_CHS,BEINMAX_CHS);
 }
 initChannels();
