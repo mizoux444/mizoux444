@@ -17,7 +17,6 @@
   --r:14px;--rs:10px;
   --a1:#0a3d2e;--a2:#155f47;--a3:#1e8a64;--a4:#2dbf8b;--a5:#8eecd0;--a6:#e0faf3;
   --k1:#7a1010;--k2:#b01c1c;--k3:#d63030;--k4:#f06060;--k5:#fbbdbd;--k6:#fff0f0;
-  --m1:#003580;--m2:#004db3;--m3:#0066e6;--m4:#3399ff;--m5:#99ccff;--m6:#e5f0ff;
 }
 html,body{min-height:100%;min-height:100dvh;background:var(--off);color:var(--text);font-family:'Cairo',sans-serif;overflow-x:hidden;}
 
@@ -165,44 +164,7 @@ body.cinema-mode .cinema-close{display:flex;}
 .ch-card.alwan .card-badge span{color:var(--a2);}
 .ch-card.alwan.active .card-badge span{color:var(--a1);}
 
-/* ══ BEIN MAX STYLES ══ */
-.ch-card.beinmax::before{background:linear-gradient(90deg,var(--m1),var(--m4));}
-.ch-card.beinmax .card-num{background:var(--m2);}
-.ch-card.beinmax .card-logo{background:var(--m6);}
-.ch-card.beinmax .card-badge{background:var(--m6);}
-.ch-card.beinmax .card-badge span{color:var(--m2);}
-.ch-card.beinmax:hover{border-color:var(--m4);box-shadow:0 4px 18px rgba(0,53,128,0.15);}
-.ch-card.beinmax.active{background:linear-gradient(145deg,#e5f0ff,#cce0ff);border-color:var(--m3);box-shadow:0 6px 24px rgba(0,53,128,0.22);}
-.ch-card.beinmax.active::before{transform:scaleX(1);background:linear-gradient(90deg,var(--m1),var(--m3));}
-.ch-card.beinmax.active .card-num{background:var(--m3);}
-.ch-card.beinmax.active .card-logo{border-color:var(--m3);background:#b3d4ff;}
-.ch-card.beinmax.active .card-name{color:var(--m1);}
-.ch-card.beinmax.active .card-badge{background:var(--m5);}
-.ch-card.beinmax.active .card-badge span{color:var(--m1);}
-.beinmax-title{color:var(--m1);}
-.beinmax-line{background:linear-gradient(90deg,var(--m2),transparent)!important;}
-.beinmax-count{color:var(--m3)!important;background:var(--m6)!important;}
-
-/* ══ SCROLLING CARD NAME ══ */
-.card-name-wrap{
-  width:100%;overflow:hidden;
-  position:relative;
-}
-.card-name-scroll{
-  display:inline-block;
-  white-space:nowrap;
-  font-size:12px;font-weight:700;color:var(--text);
-  animation:marquee 7s linear infinite;
-  padding-left:100%;
-}
-.ch-card.active .card-name-scroll{color:var(--m1);}
-.ch-card.beinmax.active .card-name-scroll{color:var(--m1);}
-@keyframes marquee{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-100%);}
-}
-
-
+/* ══ ALKASS STYLES ══ */
 .ch-card.alkass::before{background:linear-gradient(90deg,var(--k2),var(--k4));}
 .ch-card.alkass .card-num{background:var(--k2);}
 .ch-card.alkass .card-logo{background:var(--k6);}
@@ -335,7 +297,6 @@ body.cinema-mode .cinema-close{display:flex;}
       </div>
       <div class="ch-grid" id="beinGrid"></div>
     </div>
-
     <div id="alwanSection" style="margin-top:4px;">
       <div class="section-hdr">
         <div class="section-title alwan-title">ALWAN</div>
@@ -453,12 +414,6 @@ function makeAlwanCard(ch){
   d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name">${ch.name}</div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
   d.onclick=()=>play(ch);return d;
 }
-function makeMaxCard(ch){
-  const d=document.createElement('div');
-  d.className='ch-card beinmax'+(cur&&cur.type==='beinmax'&&cur.id===ch.id?' active':'');
-  d.innerHTML=`<div class="card-num">${ch.id}</div><img class="card-logo" src="${BEINMAX_LOGO}" alt="${ch.name}" onerror="this.style.opacity='.3'"/><div class="card-name-wrap"><span class="card-name-scroll">${ch.name}</span></div><div class="card-badge"><span class="bd"></span><span>مباشر</span></div>`;
-  d.onclick=()=>play(ch);return d;
-}
 function makeAlkassCard(ch){
   const d=document.createElement('div');
   d.className='ch-card alkass'+(cur&&cur.type==='alkass'&&cur.id===ch.id?' active':'');
@@ -497,86 +452,74 @@ function play(ch){
   document.getElementById('npMini').classList.add('show');
   document.getElementById('npName').textContent=ch.name;
   document.getElementById('loadTxt').textContent='جاري تحميل '+ch.name+'...';
-  // تغيير اللوغو مع القناة
   const logos={
     bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
     alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
   };
   const chLogo=logos[ch.type]||logos.bein;
-  const npLogo=document.getElementById('npLogo');
-  npLogo.src=chLogo;
-  npLogo.style.display='';
-  const loadLogo=document.getElementById('loadLogo');
-  loadLogo.src=chLogo;
-  loadLogo.style.display='';
+  document.getElementById('npLogo').src=chLogo;
+  document.getElementById('npLogo').style.display='';
+  document.getElementById('loadLogo').src=chLogo;
+  document.getElementById('loadLogo').style.display='';
   showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 let errTimer=null;
-let stallTimer=null;
 
-function clearTimers(){
+function clearErrTimer(){
   if(errTimer){clearTimeout(errTimer);errTimer=null;}
-  if(stallTimer){clearInterval(stallTimer);stallTimer=null;}
 }
 
 function loadStream(url){
-  clearTimers();
+  clearErrTimer();
   if(hls){hls.destroy();hls=null;}
-
-  const errDelay = 30000;
-
-  const hlsConfig={
-    enableWorker:true,
-    lowLatencyMode:true,
-    backBufferLength:30,
-  };
-
+  const hlsConfig={enableWorker:true,lowLatencyMode:true,backBufferLength:30};
   if(Hls.isSupported()){
     hls=new Hls(hlsConfig);
     hls.loadSource(url);
     hls.attachMedia(vid);
 
+    hls.on(Hls.Events.ERROR,(_,d)=>{
+      if(d.fatal && !errTimer){
+        errTimer=setTimeout(()=>{hideL();showE('تعذّر تحميل البث');},30000);
+      }
+    });
+
+    vid.addEventListener('playing',()=>{
+      clearErrTimer();
+      hideL();
+      hideE();
+    });
+
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{
       vid.play().catch(()=>{});
     });
 
-    hls.on(Hls.Events.ERROR,(_,d)=>{
-      if(d.fatal){
-        if(!errTimer){
-          errTimer=setTimeout(()=>{
-            hideL();
-            showE('تعذّر تحميل البث');
-          }, errDelay);
-        }
-      }
-    });
-
-    // استئناف فوري عند رجوع الإنترنت
-    vid.addEventListener('playing', ()=>{
-      clearTimers();
-      hideL();
-      hideE();
-    });
-    window.addEventListener('online', ()=>{
-      if(hls && cur){
-        hideE();
-        hls.startLoad();
-      }
-    });
-
   } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
     vid.src=url;
-    vid.addEventListener('playing',()=>{clearTimers();hideL();hideE();},{once:true});
+    vid.addEventListener('playing',()=>{clearErrTimer();hideL();hideE();},{once:true});
     vid.addEventListener('error',()=>{
-      errTimer=setTimeout(()=>{hideL();showE('تعذّر تشغيل القناة');}, errDelay);
+      if(!errTimer) errTimer=setTimeout(()=>{hideL();showE('تعذّر تشغيل القناة');},30000);
     },{once:true});
   } else {
     hideL();showE('المتصفح لا يدعم HLS');
   }
 }
+
+// استئناف فوري عند رجوع الإنترنت
+window.addEventListener('online',()=>{
+  if(hls && cur){hideE();hls.startLoad();}
+});
+
+// فحص كل ثانية إذا رجع الإنترنت
+setInterval(()=>{
+  if(navigator.onLine && hls && cur && vid.paused && !document.getElementById('errOv').classList.contains('show')){
+    hls.startLoad();
+    vid.play().catch(()=>{});
+  }
+},1000);
 
 function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl);}}
 function showL(){document.getElementById('loadOv').classList.add('show');}
@@ -593,9 +536,11 @@ async function initChannels(){
   try{
     const res=await fetch(CHANNELS_URL+'?t='+Date.now());
     const data=await res.json();
-    BEIN_CHS =(data.bein  ||[]).map(c=>({...c,type:'bein'}));
-    ALWAN_CHS=(data.alwan ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
-  }catch(e){console.warn('فشل جلب القنوات',e);}
+    BEIN_CHS  =(data.bein  ||[]).map(c=>({...c,type:'bein'}));
+    ALWAN_CHS =(data.alwan ||[]).filter(c=>c.id>2).map(c=>({...c,type:'alwan'}));
+  }catch(e){
+    console.warn('فشل جلب القنوات',e);
+  }
   render(BEIN_CHS,ALWAN_CHS);
 }
 initChannels();
