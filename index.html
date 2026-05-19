@@ -287,7 +287,7 @@ body.cinema-mode .cinema-close{display:flex;}
       </div>
       <div class="ov" id="loadOv">
         <div class="spin"></div>
-        <img class="ov-logo" src="https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png" alt="" onerror="this.style.display='none'"/>
+        <img class="ov-logo" id="loadLogo" src="" alt="" onerror="this.style.display='none'"/>
         <div class="ov-txt" id="loadTxt">جاري التحميل...</div>
       </div>
       <div class="ov" id="errOv">
@@ -502,9 +502,13 @@ function play(ch){
     bein:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images.png',
     alwan:'https://raw.githubusercontent.com/mizoux444/miz/refs/heads/main/images%20(1).jpeg',
   };
+  const chLogo=logos[ch.type]||logos.bein;
   const npLogo=document.getElementById('npLogo');
-  npLogo.src=logos[ch.type]||logos.bein;
+  npLogo.src=chLogo;
   npLogo.style.display='';
+  const loadLogo=document.getElementById('loadLogo');
+  loadLogo.src=chLogo;
+  loadLogo.style.display='';
   showL();hideE();loadStream(ch.url);
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
