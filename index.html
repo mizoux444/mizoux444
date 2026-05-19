@@ -519,27 +519,101 @@ function play(ch){
   const npLogo=document.getElementById('npLogo');
   npLogo.src=logos[ch.type]||logos.bein;
   npLogo.style.display='';
-  showL();hideE();loadStream(ch.url);
+  showL();hideE();loadStream(ch.url, ch.type==='beinmax');
   if(!document.body.classList.contains('cinema-mode'))
     playerWrap.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function loadStream(url){
-  if(hls){hls.destroy();hls=null;}
-  const hlsConfig={enableWorker:true,lowLatencyMode:true,backBufferLength:30};
-  if(Hls.isSupported()){
-    hls=new Hls(hlsConfig);
-    hls.loadSource(url);hls.attachMedia(vid);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{hideL();vid.play().catch(()=>{});});
-    hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal){hideL();showE('تعذّر تحميل البث');}});
-  } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
-    vid.src=url;
-    vid.addEventListener('loadedmetadata',()=>{hideL();vid.play();},{once:true});
-    vid.addEventListener('error',()=>{hideL();showE('تعذّر تشغيل القناة');},{once:true});
-  } else {hideL();showE('المتصفح لا يدعم HLS');}
+let errTimer=null;
+let stallTimer=null;
+let isMaxChannel=false;
+
+function clearTimers(){
+  if(errTimer){clearTimeout(errTimer);errTimer=null;}
+  if(stallTimer){clearInterval(stallTimer);stallTimer=null;}
 }
 
-function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl);}}
+function loadStream(url,isMax){
+  clearTimers();
+  isMaxChannel=!!isMax;
+  if(hls){hls.destroy();hls=null;}
+
+  // وقت الانتظار قبل إظهار رسالة الخطأ: 30 ثانية لجميع القنوات
+  const errDelay = 30000;
+
+  const hlsConfig={
+    enableWorker:true,
+    lowLatencyMode:true,
+    backBufferLength:60,
+    maxBufferLength:30,
+    manifestLoadingTimeOut:20000,
+    manifestLoadingMaxRetry:6,
+    manifestLoadingRetryDelay:2000,
+    levelLoadingTimeOut:20000,
+    levelLoadingMaxRetry:6,
+    levelLoadingRetryDelay:2000,
+    fragLoadingTimeOut:25000,
+    fragLoadingMaxRetry:8,
+    fragLoadingRetryDelay:2000,
+  };
+
+  if(Hls.isSupported()){
+    hls=new Hls(hlsConfig);
+    hls.loadSource(url);
+    hls.attachMedia(vid);
+
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+      clearTimers();
+      hideL();
+      vid.play().catch(()=>{});
+    });
+
+    hls.on(Hls.Events.ERROR,(_,d)=>{
+      if(d.fatal){
+        // عند خطأ فادح: انتظر قبل الإظهار — قد يتعافى HLS.js وحده
+        if(!errTimer){
+          errTimer=setTimeout(()=>{
+            hideL();
+            showE('تعذّر تحميل البث');
+          }, errDelay);
+        }
+      } else {
+        // خطأ غير فادح (انقطاع مؤقت) — اترك HLS.js يحاول وحده
+      }
+    });
+
+    // استئناف فوري عند رجوع الإنترنت
+    vid.addEventListener('waiting', ()=>{
+      if(stallTimer) return;
+      stallTimer = setInterval(()=>{
+        if(navigator.onLine && hls && cur){
+          hls.startLoad();
+        }
+      }, 1000);
+    });
+    vid.addEventListener('playing', ()=>{
+      clearTimers();
+      hideE();
+    });
+    window.addEventListener('online', ()=>{
+      if(hls && cur){
+        hideE();
+        hls.startLoad();
+      }
+    });
+
+  } else if(vid.canPlayType('application/vnd.apple.mpegurl')){
+    vid.src=url;
+    vid.addEventListener('loadedmetadata',()=>{clearTimers();hideL();vid.play();},{once:true});
+    vid.addEventListener('error',()=>{
+      errTimer=setTimeout(()=>{hideL();showE('تعذّر تشغيل القناة');}, errDelay);
+    },{once:true});
+  } else {
+    hideL();showE('المتصفح لا يدعم HLS');
+  }
+}
+
+function doRetry(){if(retryUrl){hideE();showL();loadStream(retryUrl,isMaxChannel);}}
 function showL(){document.getElementById('loadOv').classList.add('show');}
 function hideL(){document.getElementById('loadOv').classList.remove('show');}
 function showE(m){document.getElementById('errTxt').textContent=m;document.getElementById('errOv').classList.add('show');}
