@@ -207,6 +207,55 @@ body.cinema-mode .cinema-close{display:flex;}
 .footer-ig:hover{opacity:.75;}
 .footer-ig svg{width:13px;height:13px;fill:var(--p2);}
 
+/* ══ TICKER / MARQUEE ══ */
+.ticker-wrap{
+  overflow:hidden;
+  background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3),var(--p2),var(--p1));
+  background-size:300% 100%;
+  animation:tickerBg 6s linear infinite;
+  border-radius:10px;
+  margin:0 0 14px 0;
+  padding:0;
+  display:flex;
+  align-items:center;
+  height:36px;
+  box-shadow:0 3px 14px rgba(59,13,110,0.45);
+  position:relative;
+}
+@keyframes tickerBg{0%{background-position:0% 0%}100%{background-position:300% 0%}}
+.ticker-label{
+  flex-shrink:0;
+  background:rgba(0,0,0,0.3);
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  padding:0 10px;
+  height:100%;
+  display:flex;align-items:center;
+  border-radius:10px 0 0 10px;
+  letter-spacing:.5px;
+  gap:5px;
+  white-space:nowrap;
+}
+.ticker-label .tdot{width:7px;height:7px;border-radius:50%;background:var(--p5);box-shadow:0 0 8px var(--p4);animation:blink 1s ease-in-out infinite;}
+.ticker-inner{
+  flex:1;overflow:hidden;
+  height:100%;
+  position:relative;
+}
+.ticker-slot{
+  position:absolute;
+  top:0;bottom:0;
+  display:flex;align-items:center;
+  white-space:nowrap;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  gap:8px;
+  padding-right:40px;
+}
+.ticker-star{color:rgba(255,255,255,0.7);font-size:10px;}
+
 @media(min-width:700px){
   .app-desktop{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 60px);}
   .player-col{display:flex;flex-direction:column;overflow:hidden;border-right:1.5px solid var(--border);background:var(--white);}
@@ -288,6 +337,24 @@ body.cinema-mode .cinema-close{display:flex;}
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="srchIn" placeholder="ابحث عن قناة..." oninput="doFilter()"/>
       </div>
+
+      <!-- ══ شريط الإعلانات المتحرك ══ -->
+      <div class="ticker-wrap">
+        <div class="ticker-label"><span class="tdot"></span>إشعار</div>
+        <div class="ticker-inner" id="tickerInner">
+          <div class="ticker-slot" id="tickerA">
+            <span class="ticker-star">⚽</span>
+            يتم الآن تجهيز القنوات خاصة بكأس العالم — جميع المباريات مجانًا وبكل الجودات
+            <span class="ticker-star">★</span>
+          </div>
+          <div class="ticker-slot" id="tickerB">
+            <span class="ticker-star">⚽</span>
+            يتم الآن تجهيز القنوات خاصة بكأس العالم — جميع المباريات مجانًا وبكل الجودات
+            <span class="ticker-star">★</span>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div id="beinSection">
       <div class="section-hdr">
@@ -544,6 +611,51 @@ async function initChannels(){
   render(BEIN_CHS,ALWAN_CHS);
 }
 initChannels();
+
+/* ══ TICKER ENGINE — slot A & B يتناوبان بدون انقطاع ══ */
+(function(){
+  const inner  = document.getElementById('tickerInner');
+  const slotA  = document.getElementById('tickerA');
+  const slotB  = document.getElementById('tickerB');
+  const SPEED  = 45; // بطيء — من اليسار إلى اليمين
+  let   posA, posB, lastTime, rafId;
+  let   innerW, textW;
+
+  function measure(){
+    innerW = inner.offsetWidth;
+    textW  = slotA.scrollWidth;
+  }
+
+  function init(){
+    measure();
+    // يبدأ من خارج اليسار ويتحرك نحو اليمين
+    posA = -textW - 60;
+    posB = posA - textW - 60;
+    slotA.style.left = posA + 'px';
+    slotB.style.left = posB + 'px';
+    lastTime = null;
+    if(rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function tick(ts){
+    if(!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000;
+    lastTime = ts;
+    posA += SPEED * dt;
+    posB += SPEED * dt;
+    // عندما يخرج من اليمين → يُعاد خلف الآخر من اليسار
+    if(posA > innerW + 60){ posA = posB - textW - 60; }
+    if(posB > innerW + 60){ posB = posA - textW - 60; }
+    slotA.style.left = posA + 'px';
+    slotB.style.left = posB + 'px';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('load', init);
+  window.addEventListener('resize', init);
+})();
+
 </script>
 </body>
 </html>
